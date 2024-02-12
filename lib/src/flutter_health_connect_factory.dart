@@ -251,7 +251,7 @@ class HealthConnectFactory {
   ///  var stepsCountTotal = result[StepsRecord.aggregationKeyCountTotal];
   ///  var exerciseDurationTotal = result[ExerciseSessionRecord.aggregationKeyExerciseDurationTotal];
   ///
-  static Future<Map<String, dynamic>> aggregate({
+  static Future<Map<String, double>> aggregate({
     required List<String> aggregationKeys,
     required DateTime startTime,
     required DateTime endTime,
@@ -267,6 +267,20 @@ class HealthConnectFactory {
       'endTime': end,
     };
 
-    return await _channel.invokeMethod('aggregate', args).then((value) => Map<String, dynamic>.from(value));
+    try {
+      final Map<dynamic, dynamic> resultMap = await _channel.invokeMethod('aggregate', args);
+
+      // Convert the dynamic map to Map<String, double>
+      final Map<String, double> resultData = {};
+      resultMap.forEach((key, value) {
+        resultData[key as String] = (value ?? 0).toDouble(); // Convert null values to 0 and ensure the value is double
+      });
+
+      return resultData;
+    } catch (e) {
+      // Handle any errors during method invocation
+      print('Error during method invocation: $e');
+      return {};
+    }
   }
 }
