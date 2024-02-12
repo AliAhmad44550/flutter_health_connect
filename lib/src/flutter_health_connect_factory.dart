@@ -41,8 +41,7 @@ class HealthConnectFactory {
     }).then((value) => Map<String, Object>.from(value));
   }
 
-  static Future<String> getChangesToken(
-      List<HealthConnectDataType> types) async {
+  static Future<String> getChangesToken(List<HealthConnectDataType> types) async {
     return await _channel.invokeMethod('getChangesToken', {
       'types': types.map((e) => e.name).toList(),
     });
@@ -67,9 +66,7 @@ class HealthConnectFactory {
       'pageToken': pageToken,
       'ascendingOrder': ascendingOrder,
     };
-    return await _channel
-        .invokeMethod('getRecord', args)
-        .then((value) => Map<String, Object>.from(value));
+    return await _channel.invokeMethod('getRecord', args).then((value) => Map<String, Object>.from(value));
   }
 
   static Future<List<dynamic>> getRecords({
@@ -92,17 +89,14 @@ class HealthConnectFactory {
     };
     List<dynamic>? data = await _channel.invokeMethod('getRecords', args);
     if (data != null && data.isNotEmpty) {
-      List<dynamic> records = data
-          .map((e) => mapToRecord(type, Map<String, dynamic>.from(e)))
-          .toList();
+      List<dynamic> records = data.map((e) => mapToRecord(type, Map<String, dynamic>.from(e))).toList();
       return records;
     } else {
       return [];
     }
   }
 
-  static dynamic mapToRecord(
-      HealthConnectDataType type, Map<String, dynamic> map) {
+  static dynamic mapToRecord(HealthConnectDataType type, Map<String, dynamic> map) {
     switch (type) {
       case HealthConnectDataType.ActiveCaloriesBurned:
         return ActiveCaloriesBurnedRecord.fromMap(map);
@@ -191,8 +185,7 @@ class HealthConnectFactory {
   }) async {
     final args = <String, dynamic>{
       'type': type.name,
-      'data':
-          List<Map<String, dynamic>>.from(data.map((Record e) => e.toMap())),
+      'data': List<Map<String, dynamic>>.from(data.map((Record e) => e.toMap())),
     };
     return await _channel.invokeMethod('writeData', args);
   }
@@ -258,7 +251,7 @@ class HealthConnectFactory {
   ///  var stepsCountTotal = result[StepsRecord.aggregationKeyCountTotal];
   ///  var exerciseDurationTotal = result[ExerciseSessionRecord.aggregationKeyExerciseDurationTotal];
   ///
-  static Future<Map<String, double>> aggregate({
+  static Future<Map<String, dynamic>> aggregate({
     required List<String> aggregationKeys,
     required DateTime startTime,
     required DateTime endTime,
@@ -274,8 +267,6 @@ class HealthConnectFactory {
       'endTime': end,
     };
 
-    return await _channel
-        .invokeMethod('aggregate', args)
-        .then((value) => Map<String, double>.from(value));
+    return await _channel.invokeMethod('aggregate', args).then((value) => Map<String, dynamic>.from(value));
   }
 }

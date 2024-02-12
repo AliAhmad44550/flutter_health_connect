@@ -743,7 +743,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         {
                             replyMapper.convertValue(
                                 response[HealthConnectAggregateMetricTypeMap[it]!!],
-                                Double::class.java
+                                Any::class.java
                             )
                         }
                     )
