@@ -268,9 +268,6 @@ class HealthConnectFactory {
     };
 
     return await _channel.invokeMethod('aggregate', args).then((value) {
-      log("value.toString()");
-      log(value.toString());
-      log("=-==-=-==-=--");
       return Map<String, dynamic>.from(value);
     });
   }
