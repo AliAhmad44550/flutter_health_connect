@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_health_connect/flutter_health_connect.dart';
@@ -58,7 +59,13 @@ class _MyAppState extends State<MyApp> {
 
   List<HealthConnectDataType> types = [
     HealthConnectDataType.Steps,
-    HealthConnectDataType.ExerciseSession,
+    HealthConnectDataType.BodyFat,
+    HealthConnectDataType.Weight,
+    HealthConnectDataType.ActiveCaloriesBurned,
+    HealthConnectDataType.HeartRateVariabilityRmssd,
+    HealthConnectDataType.RestingHeartRate,
+    HealthConnectDataType.Distance,
+    HealthConnectDataType.SleepSession,
     // HealthConnectDataType.HeartRate,
     // HealthConnectDataType.SleepSession,
     // HealthConnectDataType.OxygenSaturation,
@@ -172,8 +179,7 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () async {
-                var startTime =
-                    DateTime.now().subtract(const Duration(days: 4));
+                var startTime = DateTime.now().subtract(const Duration(days: 4));
                 var endTime = DateTime.now();
                 try {
                   final requests = <Future>[];
@@ -190,22 +196,22 @@ class _MyAppState extends State<MyApp> {
                 } catch (e, s) {
                   resultText = '$e:$s'.toString();
                 }
+                log(resultText);
                 _updateResultText();
               },
               child: const Text('Get Record'),
             ),
             ElevatedButton(
               onPressed: () async {
-                var startTime =
-                    DateTime.now().subtract(const Duration(seconds: 5));
-                var endTime = DateTime.now();
+                var startTime = DateTime.now().subtract(const Duration(days: 3));
+                var endTime = DateTime.now().subtract(const Duration(days: 2));
+                var endTime1 = DateTime.now();
                 StepsRecord stepsRecord = StepsRecord(
                   startTime: startTime,
                   endTime: endTime,
                   count: 5,
                 );
-                ExerciseSessionRecord exerciseSessionRecord =
-                    ExerciseSessionRecord(
+                ExerciseSessionRecord exerciseSessionRecord = ExerciseSessionRecord(
                   startTime: startTime,
                   endTime: endTime,
                   exerciseType: ExerciseType.walking,
@@ -216,16 +222,12 @@ class _MyAppState extends State<MyApp> {
                   requests.add(HealthConnectFactory.writeData(
                     type: HealthConnectDataType.Steps,
                     data: [stepsRecord],
-                  ).then((value) => typePoints.addAll(
-                      {HealthConnectDataType.Steps.name: stepsRecord})));
+                  ).then((value) => typePoints.addAll({HealthConnectDataType.Steps.name: stepsRecord})));
 
                   requests.add(HealthConnectFactory.writeData(
                     type: HealthConnectDataType.ExerciseSession,
                     data: [exerciseSessionRecord],
-                  ).then((value) => typePoints.addAll({
-                        HealthConnectDataType.ExerciseSession.name:
-                            exerciseSessionRecord
-                      })));
+                  ).then((value) => typePoints.addAll({HealthConnectDataType.ExerciseSession.name: exerciseSessionRecord})));
                   await Future.wait(requests);
                   resultText = '$typePoints';
                 } catch (e, s) {
@@ -237,14 +239,18 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () async {
-                var startTime =
-                    DateTime.now().subtract(const Duration(days: 1));
-                var endTime = DateTime.now();
+                var lastDate = DateTime.now();
                 try {
+                  DateTime startTime = DateTime(lastDate.year, lastDate.month, lastDate.day - 3);
+                  var endTime = DateTime(lastDate.year, lastDate.month, lastDate.day - 1);
                   var result = await HealthConnectFactory.aggregate(
                     aggregationKeys: [
                       StepsRecord.aggregationKeyCountTotal,
-                      ExerciseSessionRecord.aggregationKeyExerciseDurationTotal,
+                      WeightRecord.aggregationKeyWeightAvg,
+                      ActiveCaloriesBurnedRecord.aggregationKeyActiveCaloriesTotal,
+                      RestingHeartRateRecord.aggregationKeyBpmAvg,
+                      DistanceRecord.aggregationKeyDistanceTotal,
+                      // SleepSessionRecord.aggregationKeySleepDurationTotal,
                     ],
                     startTime: startTime,
                     endTime: endTime,

@@ -7,8 +7,7 @@ class Percentage implements Comparable<Percentage> {
   int compareTo(Percentage other) => value.compareTo(other.value);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) || other is Percentage && value == other.value;
+  bool operator ==(Object other) => identical(this, other) || other is Percentage && value == other.value;
 
   @override
   int get hashCode => value.hashCode;
@@ -16,6 +15,5 @@ class Percentage implements Comparable<Percentage> {
   @override
   String toString() => '$value%';
 
-  factory Percentage.fromMap(Map<String, dynamic> map) =>
-      Percentage(map['percent'] as double);
+  factory Percentage.fromMap(Map<String, dynamic> map) => Percentage(map['percent'] ?? 0.0);
 }

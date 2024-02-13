@@ -1,6 +1,7 @@
 library flutter_health_connect;
 
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_health_connect/src/records.dart';
