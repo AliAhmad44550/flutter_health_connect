@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
     HealthConnectDataType.RestingHeartRate,
     HealthConnectDataType.Distance,
     HealthConnectDataType.SleepSession,
-    // HealthConnectDataType.HeartRate,
+    HealthConnectDataType.Nutrition,
     // HealthConnectDataType.SleepSession,
     // HealthConnectDataType.OxygenSaturation,
     // HealthConnectDataType.RespiratoryRate,
@@ -167,7 +167,7 @@ class _MyAppState extends State<MyApp> {
                 try {
                   var result = await HealthConnectFactory.requestPermissions(
                     types,
-                    //readOnly: readOnly,
+                    readOnly: readOnly,
                   );
                   resultText = 'requestPermissions: $result';
                 } catch (e) {
@@ -262,6 +262,38 @@ class _MyAppState extends State<MyApp> {
                 _updateResultText();
               },
               child: const Text('Get aggregated data'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                var lastDate = DateTime.now();
+                try {
+                  DateTime startTime = DateTime(lastDate.year, lastDate.month, lastDate.day - 30);
+                  var endTime = DateTime(lastDate.year, lastDate.month, lastDate.day);
+
+                  // For aggregateGroupByPeriod
+                  var resultPeriod = await HealthConnectFactory.aggregateGroupByPeriod(
+                    aggregationKeys: [
+                      StepsRecord.aggregationKeyCountTotal,
+                      WeightRecord.aggregationKeyWeightAvg,
+                      ActiveCaloriesBurnedRecord.aggregationKeyActiveCaloriesTotal,
+                      RestingHeartRateRecord.aggregationKeyBpmAvg,
+                      DistanceRecord.aggregationKeyDistanceTotal,
+                      NutritionRecord.aggregationKeyEnergyTotal,
+                      // SleepSessionRecord.aggregationKeySleepDurationTotal,
+                    ],
+                    startTime: startTime,
+                    endTime: endTime,
+                    timeRangeSlicer: 1, // Example: Slices data into monthly intervals
+                  );
+                  log(resultPeriod.toString());
+                  resultText = 'Duration result: \nPeriod result: $resultPeriod';
+                } catch (e, s) {
+                  resultText = '$e:$s'.toString();
+                }
+                // print(resultText);
+                _updateResultText();
+              },
+              child: const Text('Get aggregated by period data'),
             ),
             Text(resultText),
           ],

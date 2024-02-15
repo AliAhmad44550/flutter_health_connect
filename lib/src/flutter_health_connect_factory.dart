@@ -87,6 +87,8 @@ class HealthConnectFactory {
       'pageToken': pageToken,
       'ascendingOrder': ascendingOrder,
     };
+    print(args);
+
     List<dynamic>? data = await _channel.invokeMethod('getRecords', args);
     if (data != null && data.isNotEmpty) {
       List<dynamic> records = data.map((e) => mapToRecord(type, Map<String, dynamic>.from(e))).toList();
@@ -269,6 +271,49 @@ class HealthConnectFactory {
 
     return await _channel.invokeMethod('aggregate', args).then((value) {
       return Map<String, dynamic>.from(value);
+    });
+  }
+
+  static Future<Map> aggregateGroupByDuration({
+    required List<String> aggregationKeys,
+    required DateTime startTime,
+    required DateTime endTime,
+    required int timeRangeSlicer, // Add this parameter
+  }) async {
+    final start = startTime.toLocal().toIso8601String();
+    final end = endTime.toLocal().toIso8601String();
+    final args = <String, dynamic>{
+      'aggregationKeys': aggregationKeys,
+      'startTime': start,
+      'endTime': end,
+      'timeRangeSlicer': timeRangeSlicer,
+    };
+    // print(args);
+
+    return await _channel.invokeMethod('aggregateGroupByDuration', args).then((value) {
+      // print(value);
+      return Map.from(value);
+    });
+  }
+
+  static Future<Map> aggregateGroupByPeriod({
+    required List<String> aggregationKeys,
+    required DateTime startTime,
+    required DateTime endTime,
+    int? timeRangeSlicer, // Add this parameter
+  }) async {
+    final start = startTime.toLocal().toIso8601String();
+    final end = endTime.toLocal().toIso8601String();
+    final args = <String, dynamic>{
+      'aggregationKeys': aggregationKeys,
+      'startTime': start,
+      'endTime': end,
+      'timeRangeSlicer': timeRangeSlicer,
+    };
+    // print(args);
+    return await _channel.invokeMethod('aggregateGroupByPeriod', args).then((value) {
+      // print(value);
+      return Map.from(value);
     });
   }
 }
