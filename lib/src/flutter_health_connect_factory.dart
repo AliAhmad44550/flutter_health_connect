@@ -87,8 +87,6 @@ class HealthConnectFactory {
       'pageToken': pageToken,
       'ascendingOrder': ascendingOrder,
     };
-    print(args);
-
     List<dynamic>? data = await _channel.invokeMethod('getRecords', args);
     if (data != null && data.isNotEmpty) {
       List<dynamic> records = data.map((e) => mapToRecord(type, Map<String, dynamic>.from(e))).toList();
@@ -274,11 +272,13 @@ class HealthConnectFactory {
     });
   }
 
-  static Future<Map> aggregateGroupByDuration({
+  static Future<List<Map>> aggregateGroupByDuration({
     required List<String> aggregationKeys,
     required DateTime startTime,
     required DateTime endTime,
-    required int timeRangeSlicer, // Add this parameter
+    int? minuteSlicer,
+    int? secondSlicer,
+    int? hourSlicer,
   }) async {
     final start = startTime.toLocal().toIso8601String();
     final end = endTime.toLocal().toIso8601String();
@@ -286,21 +286,21 @@ class HealthConnectFactory {
       'aggregationKeys': aggregationKeys,
       'startTime': start,
       'endTime': end,
-      'timeRangeSlicer': timeRangeSlicer,
+      'minuteSlicer': minuteSlicer,
+      'secondSlicer': secondSlicer,
+      'hourSlicer': hourSlicer,
     };
-    // print(args);
-
-    return await _channel.invokeMethod('aggregateGroupByDuration', args).then((value) {
-      // print(value);
-      return Map.from(value);
-    });
+    return await _channel.invokeMethod('aggregateGroupByDuration', args).then((value) => List<Map>.from(value));
   }
 
-  static Future<Map> aggregateGroupByPeriod({
+  static Future<List<Map>> aggregateGroupByPeriod({
     required List<String> aggregationKeys,
     required DateTime startTime,
     required DateTime endTime,
-    int? timeRangeSlicer, // Add this parameter
+    int? daySlicerCount,
+    int? weekSlicerCount,
+    int? monthSlicerCount,
+    int? yearSlicerCount,
   }) async {
     final start = startTime.toLocal().toIso8601String();
     final end = endTime.toLocal().toIso8601String();
@@ -308,12 +308,11 @@ class HealthConnectFactory {
       'aggregationKeys': aggregationKeys,
       'startTime': start,
       'endTime': end,
-      'timeRangeSlicer': timeRangeSlicer,
+      'daySlicerCount': daySlicerCount,
+      'weekSlicerCount': weekSlicerCount,
+      'monthSlicerCount': monthSlicerCount,
+      'yearSlicerCount': yearSlicerCount,
     };
-    // print(args);
-    return await _channel.invokeMethod('aggregateGroupByPeriod', args).then((value) {
-      // print(value);
-      return Map.from(value);
-    });
+    return await _channel.invokeMethod('aggregateGroupByPeriod', args).then((value) => List<Map>.from(value));
   }
 }

@@ -35,8 +35,7 @@ import java.util.ArrayList
 import java.util.HashMap
 import androidx.health.connect.client.request.AggregateGroupByDurationRequest
 import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
-import java.time.Duration
-import java.time.Period
+
 
 /** FlutterHealthConnectPlugin */
 class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : FlutterPlugin, MethodCallHandler, ActivityAware,
@@ -761,16 +760,6 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                 result.error("AGGREGATE_FAIL", e.localizedMessage, e)
             }
         }
-
-    }
-
-
-    private  fun convertAggregationResult(result: Map<String, Any?>, aggregationKeys: List<String>): Map<String, Any?> {
-        val resultMap = mutableMapOf<String, Any?>()
-        for (key in aggregationKeys) {
-            resultMap[key] = result.result[HealthConnectAggregateMetricTypeMap[key]!!]
-        }
-        return replyMapper.convertValue(resultMap, hashMapOf<String, Any?>()::class.java)
     }
 
     private fun aggregateGroupByDuration(call: MethodCall, result: Result) {
@@ -788,24 +777,39 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             startTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now()
                                     .minus(1, ChronoUnit.DAYS)
                     val end = endTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now()
-                    val durationMinutes = call.argument<Long>("timeRangeSlicer") ?: 1
+                    val minuteSlicer = call.argument<Int>("minuteSlicer")
+                    val secondSlicer = call.argument<Int>("secondSlicer")
+                    val hourSlicer = call.argument<Int>("hourSlicer")
+
+                    val duration = when {
+                        minuteSlicer != null -> Duration.ofMinutes(minuteSlicer.toLong())
+                        secondSlicer != null -> Duration.ofSeconds(secondSlicer.toLong())
+                        hourSlicer != null -> Duration.ofHours(hourSlicer.toLong())
+                        else -> Duration.ofMinutes(1L)
+                    }
 
                     val response =
                             client.aggregateGroupByDuration(
                                     AggregateGroupByDurationRequest(
                                             metrics = aggregationKeys.mapNotNull { HealthConnectAggregateMetricTypeMap[it] }.toSet(),
                                             timeRangeFilter = TimeRangeFilter.between(start, end),
-                                            timeRangeSlicer = Duration.ofMinutes(durationMinutes)
+                                            timeRangeSlicer = duration
                                     )
                             )
 
-                    val resultData = LinkedHashMap<String, Any?>()
-                    for (durationResult in response) {
-                        resultData[durationResult.startTime.toString()] = convertAggregationResult(durationResult, aggregationKeys)
+                    val resultList = response.map { periodResult ->
+                        val resultMap = HashMap<String, Any?>()
+                        resultMap["startTime"] = periodResult.startTime.toString()
+                        resultMap["endTime"] = periodResult.endTime.toString()
+                        for (key in aggregationKeys) {
+                            resultMap[key] = periodResult.result[HealthConnectAggregateMetricTypeMap[key]!!]
+                        }
+                        replyMapper.convertValue(resultMap, hashMapOf<String, Any?>()::class.java)
                     }
-                    result.success(resultData)
+                    result.success(resultList)
                 }
             } catch (e: Exception) {
+                println(e.localizedMessage)
                 result.error("AGGREGATE_GROUP_BY_DURATION_FAIL", e.localizedMessage, e)
             }
         }
@@ -818,35 +822,47 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         (call.argument<ArrayList<*>>("aggregationKeys")?.filterIsInstance<String>() as ArrayList<String>?)?.toList()
 
                 if (aggregationKeys.isNullOrEmpty()) {
-                    result.success(LinkedHashMap<String, Any?>())
+                    result.success(emptyList<Map<String, Any?>>())
                 } else {
                     val startTime = call.argument<String>("startTime")
                     val endTime = call.argument<String>("endTime")
                     val start =
-                            startTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now()
-                                    .minus(1, ChronoUnit.DAYS)
+                            startTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now().minus(1, ChronoUnit.DAYS)
                     val end = endTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now()
-                    val periods = call.argument<Int>("timeRangeSlicer") ?: 1
+                    val daySlicerCount = call.argument<Int>("daySlicerCount")
+                    val weekSlicerCount = call.argument<Int>("weekSlicerCount")
+                    val monthSlicerCount = call.argument<Int>("monthSlicerCount")
+                    val yearSlicerCount = call.argument<Int>("yearSlicerCount")
+
+                    val periods = when {
+                        daySlicerCount != null -> Period.ofDays(daySlicerCount)
+                        weekSlicerCount != null -> Period.ofWeeks(weekSlicerCount)
+                        monthSlicerCount != null -> Period.ofMonths(monthSlicerCount)
+                        yearSlicerCount != null -> Period.ofYears(yearSlicerCount)
+                        else -> Period.ofDays(1)
+                    }
 
                     val response =
                             client.aggregateGroupByPeriod(
                                     AggregateGroupByPeriodRequest(
                                             metrics = aggregationKeys.mapNotNull { HealthConnectAggregateMetricTypeMap[it] }.toSet(),
                                             timeRangeFilter = TimeRangeFilter.between(start, end),
-                                            timeRangeSlicer = Period.ofDays(periods)
-                                    )
-                            )
+                                            timeRangeSlicer = periods))
 
-                    val resultData = LinkedHashMap<String, Any?>()
-                    for (periodResult in response) {
-                        resultData[periodResult.startTime.toString()] = convertAggregationResult(periodResult, aggregationKeys)
+                    val resultList = response.map { periodResult ->
+                        val resultMap = HashMap<String, Any?>()
+                        resultMap["startTime"] = periodResult.startTime.toString()
+                        resultMap["endTime"] = periodResult.endTime.toString()
+                        for (key in aggregationKeys) {
+                            resultMap[key] = periodResult.result[HealthConnectAggregateMetricTypeMap[key]!!]
+                        }
+                        replyMapper.convertValue(resultMap, hashMapOf<String, Any?>()::class.java)
                     }
-                    result.success(resultData)
+                    result.success(resultList)
                 }
             } catch (e: Exception) {
                 result.error("AGGREGATE_GROUP_BY_PERIOD_FAIL", e.localizedMessage, e)
             }
         }
     }
-
 }

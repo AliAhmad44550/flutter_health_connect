@@ -267,7 +267,7 @@ class _MyAppState extends State<MyApp> {
               onPressed: () async {
                 var lastDate = DateTime.now();
                 try {
-                  DateTime startTime = DateTime(lastDate.year, lastDate.month, lastDate.day - 30);
+                  DateTime startTime = DateTime(lastDate.year, lastDate.month, lastDate.day - 15);
                   var endTime = DateTime(lastDate.year, lastDate.month, lastDate.day);
 
                   // For aggregateGroupByPeriod
@@ -283,7 +283,7 @@ class _MyAppState extends State<MyApp> {
                     ],
                     startTime: startTime,
                     endTime: endTime,
-                    timeRangeSlicer: 1, // Example: Slices data into monthly intervals
+                    daySlicerCount: 2,
                   );
                   log(resultPeriod.toString());
                   resultText = 'Duration result: \nPeriod result: $resultPeriod';
