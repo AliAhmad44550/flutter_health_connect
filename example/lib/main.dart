@@ -60,13 +60,8 @@ class _MyAppState extends State<MyApp> {
   List<HealthConnectDataType> types = [
     HealthConnectDataType.Steps,
     HealthConnectDataType.BodyFat,
-    HealthConnectDataType.Weight,
-    HealthConnectDataType.ActiveCaloriesBurned,
     HealthConnectDataType.HeartRateVariabilityRmssd,
-    HealthConnectDataType.RestingHeartRate,
-    HealthConnectDataType.Distance,
-    HealthConnectDataType.SleepSession,
-    HealthConnectDataType.Nutrition,
+
     // HealthConnectDataType.SleepSession,
     // HealthConnectDataType.OxygenSaturation,
     // HealthConnectDataType.RespiratoryRate,
@@ -206,27 +201,56 @@ class _MyAppState extends State<MyApp> {
                 var startTime = DateTime.now().subtract(const Duration(days: 3));
                 var endTime = DateTime.now().subtract(const Duration(days: 2));
                 var endTime1 = DateTime.now();
-                StepsRecord stepsRecord = StepsRecord(
+                ActiveCaloriesBurnedRecord stepsRecord = ActiveCaloriesBurnedRecord(
                   startTime: startTime,
                   endTime: endTime,
-                  count: 5,
+                  energy: Energy(15, EnergyUnit.calories),
                 );
-                ExerciseSessionRecord exerciseSessionRecord = ExerciseSessionRecord(
-                  startTime: startTime,
-                  endTime: endTime,
-                  exerciseType: ExerciseType.walking,
+                RestingHeartRateRecord exerciseSessionRecord = RestingHeartRateRecord(
+                  time: startTime,
+                  beatsPerMinute: 82,
+                );
+                HeartRateVariabilityRmssdRecord hRecord = HeartRateVariabilityRmssdRecord(
+                  time: startTime,
+                  heartRateVariabilityMillis: 79,
+                );
+                WeightRecord wRecord = WeightRecord(
+                  time: startTime,
+                  weight: Mass(143, MassUnit.pounds),
+                );
+                NutritionRecord nRecord =
+                    NutritionRecord(startTime: startTime, endTime: endTime, energy: Energy(13.3, EnergyUnit.calories));
+                BodyFatRecord bRecord = BodyFatRecord(
+                  time: startTime,
+                  percentage: Percentage(26.7),
                 );
                 try {
                   final requests = <Future>[];
                   Map<String, dynamic> typePoints = {};
                   requests.add(HealthConnectFactory.writeData(
-                    type: HealthConnectDataType.Steps,
+                    type: HealthConnectDataType.ActiveCaloriesBurned,
                     data: [stepsRecord],
                   ).then((value) => typePoints.addAll({HealthConnectDataType.Steps.name: stepsRecord})));
 
                   requests.add(HealthConnectFactory.writeData(
-                    type: HealthConnectDataType.ExerciseSession,
+                    type: HealthConnectDataType.RestingHeartRate,
                     data: [exerciseSessionRecord],
+                  ).then((value) => typePoints.addAll({HealthConnectDataType.ExerciseSession.name: exerciseSessionRecord})));
+                  requests.add(HealthConnectFactory.writeData(
+                    type: HealthConnectDataType.Nutrition,
+                    data: [nRecord],
+                  ).then((value) => typePoints.addAll({HealthConnectDataType.ExerciseSession.name: exerciseSessionRecord})));
+                  requests.add(HealthConnectFactory.writeData(
+                    type: HealthConnectDataType.Weight,
+                    data: [wRecord],
+                  ).then((value) => typePoints.addAll({HealthConnectDataType.ExerciseSession.name: exerciseSessionRecord})));
+                  requests.add(HealthConnectFactory.writeData(
+                    type: HealthConnectDataType.BodyFat,
+                    data: [bRecord],
+                  ).then((value) => typePoints.addAll({HealthConnectDataType.ExerciseSession.name: exerciseSessionRecord})));
+                  requests.add(HealthConnectFactory.writeData(
+                    type: HealthConnectDataType.HeartRateVariabilityRmssd,
+                    data: [hRecord],
                   ).then((value) => typePoints.addAll({HealthConnectDataType.ExerciseSession.name: exerciseSessionRecord})));
                   await Future.wait(requests);
                   resultText = '$typePoints';

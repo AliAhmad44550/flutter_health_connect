@@ -797,14 +797,22 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                                     )
                             )
 
-                    val resultList = response.map { periodResult ->
-                        val resultMap = HashMap<String, Any?>()
-                        resultMap["startTime"] = periodResult.startTime.toString()
-                        resultMap["endTime"] = periodResult.endTime.toString()
+                    val resultList = mutableListOf<Map<String, Any?>>()
+
+                    response.forEach { periodResult ->
+                        val periodStartTime = periodResult.startTime.toString()
+                        val periodEndTime = periodResult.endTime.toString()
                         for (key in aggregationKeys) {
-                            resultMap[key] = periodResult.result[HealthConnectAggregateMetricTypeMap[key]!!]
+                            val type = key
+                            val value = periodResult.result[HealthConnectAggregateMetricTypeMap[key]!!]
+                            val resultMap = mapOf(
+                                    "startTime" to periodStartTime,
+                                    "endTime" to periodEndTime,
+                                    "type" to type,
+                                    "value" to value
+                            )
+                            resultList.add( replyMapper.convertValue(resultMap, hashMapOf<String, Any?>()::class.java))
                         }
-                        replyMapper.convertValue(resultMap, hashMapOf<String, Any?>()::class.java)
                     }
                     result.success(resultList)
                 }
@@ -818,16 +826,14 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
     private fun aggregateGroupByPeriod(call: MethodCall, result: Result) {
         scope.launch {
             try {
-                val aggregationKeys =
-                        (call.argument<ArrayList<*>>("aggregationKeys")?.filterIsInstance<String>() as ArrayList<String>?)?.toList()
+                val aggregationKeys = (call.argument<ArrayList<*>>("aggregationKeys")?.filterIsInstance<String>() as ArrayList<String>?)?.toList()
 
                 if (aggregationKeys.isNullOrEmpty()) {
                     result.success(emptyList<Map<String, Any?>>())
                 } else {
                     val startTime = call.argument<String>("startTime")
                     val endTime = call.argument<String>("endTime")
-                    val start =
-                            startTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now().minus(1, ChronoUnit.DAYS)
+                    val start = startTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now().minus(1, ChronoUnit.DAYS)
                     val end = endTime?.let { LocalDateTime.parse(it) } ?: LocalDateTime.now()
                     val daySlicerCount = call.argument<Int>("daySlicerCount")
                     val weekSlicerCount = call.argument<Int>("weekSlicerCount")
@@ -842,21 +848,30 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         else -> Period.ofDays(1)
                     }
 
-                    val response =
-                            client.aggregateGroupByPeriod(
-                                    AggregateGroupByPeriodRequest(
-                                            metrics = aggregationKeys.mapNotNull { HealthConnectAggregateMetricTypeMap[it] }.toSet(),
-                                            timeRangeFilter = TimeRangeFilter.between(start, end),
-                                            timeRangeSlicer = periods))
+                    val response = client.aggregateGroupByPeriod(
+                            AggregateGroupByPeriodRequest(
+                                    metrics = aggregationKeys.mapNotNull { HealthConnectAggregateMetricTypeMap[it] }.toSet(),
+                                    timeRangeFilter = TimeRangeFilter.between(start, end),
+                                    timeRangeSlicer = periods
+                            )
+                    )
 
-                    val resultList = response.map { periodResult ->
-                        val resultMap = HashMap<String, Any?>()
-                        resultMap["startTime"] = periodResult.startTime.toString()
-                        resultMap["endTime"] = periodResult.endTime.toString()
+                    val resultList = mutableListOf<Map<String, Any?>>()
+
+                    response.forEach { periodResult ->
+                        val periodStartTime = periodResult.startTime.toString()
+                        val periodEndTime = periodResult.endTime.toString()
                         for (key in aggregationKeys) {
-                            resultMap[key] = periodResult.result[HealthConnectAggregateMetricTypeMap[key]!!]
+                            val type = key
+                            val value = periodResult.result[HealthConnectAggregateMetricTypeMap[key]!!]
+               val resultMap = mapOf(
+                                    "startTime" to periodStartTime,
+                                    "endTime" to periodEndTime,
+                                    "type" to type,
+                                    "value" to value
+                            )
+                            resultList.add( replyMapper.convertValue(resultMap, hashMapOf<String, Any?>()::class.java))
                         }
-                        replyMapper.convertValue(resultMap, hashMapOf<String, Any?>()::class.java)
                     }
                     result.success(resultList)
                 }
@@ -865,4 +880,5 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
             }
         }
     }
+
 }
