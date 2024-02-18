@@ -58,9 +58,9 @@ class _MyAppState extends State<MyApp> {
   // ];
 
   List<HealthConnectDataType> types = [
-    HealthConnectDataType.Steps,
+    // HealthConnectDataType.Steps,
     HealthConnectDataType.BodyFat,
-    HealthConnectDataType.HeartRateVariabilityRmssd,
+    // HealthConnectDataType.HeartRateVariabilityRmssd,
 
     // HealthConnectDataType.SleepSession,
     // HealthConnectDataType.OxygenSaturation,
@@ -174,7 +174,7 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () async {
-                var startTime = DateTime.now().subtract(const Duration(days: 4));
+                var startTime = DateTime.now().subtract(const Duration(days: 30));
                 var endTime = DateTime.now();
                 try {
                   final requests = <Future>[];
