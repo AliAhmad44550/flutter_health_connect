@@ -797,21 +797,20 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                                     )
                             )
 
-                    val resultList = mutableListOf<Map<String, Any?>>()
+                    val resultList = mutableListOf<Any>()
 
                     response.forEach { periodResult ->
                         val periodStartTime = periodResult.startTime.toString()
                         val periodEndTime = periodResult.endTime.toString()
                         for (key in aggregationKeys) {
-                            val type = key
                             val value = periodResult.result[HealthConnectAggregateMetricTypeMap[key]!!]
                             val resultMap = mapOf(
                                     "startTime" to periodStartTime,
                                     "endTime" to periodEndTime,
-                                    "type" to type,
+                                    "type" to key,
                                     "value" to value
                             )
-                            resultList.add( replyMapper.convertValue(resultMap, hashMapOf<String, Any?>()::class.java))
+                            resultList.add(replyMapper.convertValue(resultMap,Any::class.java))
                         }
                     }
                     result.success(resultList)
@@ -856,21 +855,20 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             )
                     )
 
-                    val resultList = mutableListOf<Map<String, Any?>>()
+                    val resultList = mutableListOf<Any>()
 
                     response.forEach { periodResult ->
                         val periodStartTime = periodResult.startTime.toString()
                         val periodEndTime = periodResult.endTime.toString()
                         for (key in aggregationKeys) {
-                            val type = key
                             val value = periodResult.result[HealthConnectAggregateMetricTypeMap[key]!!]
                val resultMap = mapOf(
-                                    "startTime" to periodStartTime,
-                                    "endTime" to periodEndTime,
-                                    "type" to type,
-                                    "value" to value
-                            )
-                            resultList.add( replyMapper.convertValue(resultMap, hashMapOf<String, Any?>()::class.java))
+                       "startTime" to periodStartTime,
+                       "endTime" to periodEndTime,
+                       "type" to key,
+                       "value" to value
+               )
+                            resultList.add(replyMapper.convertValue(resultMap,Any::class.java))
                         }
                     }
                     result.success(resultList)
