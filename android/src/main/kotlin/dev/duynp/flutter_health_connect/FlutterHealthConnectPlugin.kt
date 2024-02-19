@@ -56,7 +56,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
         context = flutterPluginBinding.applicationContext
         client = HealthConnectClient.getOrCreate(context!!)
         replyMapper.registerModule(JavaTimeModule())
-        replyMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+//        replyMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
          replyMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
     }
 
@@ -259,12 +259,13 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             )
                             reply.records.forEach {
                                 if (it::class == classType) {
-                                    records.add(
-                                            replyMapper.convertValue(
-                                                    it,
-                                                    hashMapOf<String, Any?>()::class.java
-                                            )
+                                    var value=  replyMapper.convertValue(
+                                            it,
+                                            hashMapOf<String, Any?>()::class.java
                                     )
+                                    println(value)
+                                    println(it)
+                                    records.add(value)
                                 } else {
                                     result.error("GET_RECORDS_FAIL", "Could not retrieve $type", null)
                                 }
