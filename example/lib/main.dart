@@ -58,13 +58,15 @@ class _MyAppState extends State<MyApp> {
   // ];
 
   List<HealthConnectDataType> types = [
-    // HealthConnectDataType.Steps,
+    HealthConnectDataType.Steps,
     HealthConnectDataType.BodyFat,
-    // HealthConnectDataType.HeartRateVariabilityRmssd,
-
-    // HealthConnectDataType.SleepSession,
-    // HealthConnectDataType.OxygenSaturation,
-    // HealthConnectDataType.RespiratoryRate,
+    HealthConnectDataType.Weight,
+    HealthConnectDataType.ActiveCaloriesBurned,
+    HealthConnectDataType.HeartRateVariabilityRmssd,
+    HealthConnectDataType.RestingHeartRate,
+    HealthConnectDataType.Distance,
+    HealthConnectDataType.SleepSession,
+    HealthConnectDataType.Nutrition,
   ];
 
   bool readOnly = true;

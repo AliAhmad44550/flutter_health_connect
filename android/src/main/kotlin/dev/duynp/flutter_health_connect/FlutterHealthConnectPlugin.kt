@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.PermissionController.Companion.createRequestPermissionResultContract
+import androidx.health.connect.client.aggregate.AggregateMetric
 import androidx.health.connect.client.changes.UpsertionChange
 import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
@@ -54,7 +55,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
         context = flutterPluginBinding.applicationContext
         client = HealthConnectClient.getOrCreate(context!!)
         replyMapper.registerModule(JavaTimeModule())
-//        replyMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+        replyMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
         replyMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
     }
 
@@ -861,19 +862,23 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
 
                     val resultList = mutableListOf<Any>()
 
-                    response.forEach { periodResult ->
-                        val periodStartTime = periodResult.startTime.toString()
-                        val periodEndTime = periodResult.endTime.toString()
+                    response.forEach {
+                        val periodStartTime = it.startTime.toString()
+                        val periodEndTime = it.endTime.toString()
                         for (key in aggregationKeys) {
-                            val value =
-                                    replyMapper.convertValue( periodResult.result[HealthConnectAggregateMetricTypeMap[key]!!],Any::class.java)
-                            val resultMap = mapOf(
-                                    "startTime" to periodStartTime,
-                                    "endTime" to periodEndTime,
-                                    "type" to key,
-                                    "value" to value
-                            )
-                            resultList.add(resultMap)
+                            var res= it.result[HealthConnectAggregateMetricTypeMap[key] as AggregateMetric<Any>];
+                            if(res!=null){
+                                val value =
+                                        replyMapper.convertValue(it.result[HealthConnectAggregateMetricTypeMap[key] as AggregateMetric<Any>], Any::class.java)
+                                val resultMap = mapOf(
+                                        "startTime" to periodStartTime,
+                                        "endTime" to periodEndTime,
+                                        "type" to key,
+                                        "value" to value
+                                )
+                                println(value)
+                                resultList.add(resultMap)
+                            }
                         }
                     }
                     result.success(resultList)
