@@ -55,7 +55,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
         context = flutterPluginBinding.applicationContext
         client = HealthConnectClient.getOrCreate(context!!)
         replyMapper.registerModule(JavaTimeModule())
-        replyMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+//        replyMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
         replyMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
     }
 
@@ -866,10 +866,10 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         val periodStartTime = it.startTime.toString()
                         val periodEndTime = it.endTime.toString()
                         for (key in aggregationKeys) {
-                            var res= it.result[HealthConnectAggregateMetricTypeMap[key] as AggregateMetric<Any>];
+                            var res= it.result[HealthConnectAggregateMetricTypeMap[key]!!];
                             if(res!=null){
                                 val value =
-                                        replyMapper.convertValue(it.result[HealthConnectAggregateMetricTypeMap[key] as AggregateMetric<Any>], Any::class.java)
+                                        replyMapper.convertValue(it.result[HealthConnectAggregateMetricTypeMap[key]!!], Any::class.java)
                                 val resultMap = mapOf(
                                         "startTime" to periodStartTime,
                                         "endTime" to periodEndTime,
@@ -884,7 +884,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                     result.success(resultList)
                 }
             } catch (e: Exception) {
-                result.error("AGGREGATE_GROUP_BY_PERIOD_FAIL", e.localizedMessage, e)
+                result.error("AGGREGATE_GROUP_BY_PERIOD_FAIL", e)
             }
         }
     }
