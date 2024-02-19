@@ -54,6 +54,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
         context = flutterPluginBinding.applicationContext
         client = HealthConnectClient.getOrCreate(context!!)
         replyMapper.registerModule(JavaTimeModule())
+        replyMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 //     replyMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
         replyMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
     }

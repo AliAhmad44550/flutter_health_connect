@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
     HealthConnectDataType.RestingHeartRate,
     HealthConnectDataType.Distance,
     HealthConnectDataType.SleepSession,
-    HealthConnectDataType.Nutrition,
+    // HealthConnectDataType.Nutrition,
   ];
 
   bool readOnly = true;
