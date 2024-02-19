@@ -825,7 +825,6 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                     result.success(resultList)
                 }
             } catch (e: Exception) {
-                println(e.localizedMessage)
                 result.error("AGGREGATE_GROUP_BY_DURATION_FAIL", e.localizedMessage, e)
             }
         }
