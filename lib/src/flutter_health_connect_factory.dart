@@ -97,6 +97,8 @@ class HealthConnectFactory {
   }
 
   static dynamic mapToRecord(HealthConnectDataType type, Map<String, dynamic> map) {
+    print(map);
+    print(type);
     switch (type) {
       case HealthConnectDataType.ActiveCaloriesBurned:
         return ActiveCaloriesBurnedRecord.fromMap(map);
