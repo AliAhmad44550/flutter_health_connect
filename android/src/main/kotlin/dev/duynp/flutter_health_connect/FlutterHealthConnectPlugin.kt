@@ -54,7 +54,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
         context = flutterPluginBinding.applicationContext
         client = HealthConnectClient.getOrCreate(context!!)
         replyMapper.registerModule(JavaTimeModule())
-        replyMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+//        replyMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
         replyMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
     }
 
@@ -804,14 +804,17 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         val periodStartTime = periodResult.startTime.toString()
                         val periodEndTime = periodResult.endTime.toString()
                         for (key in aggregationKeys) {
-                            val value = periodResult.result[HealthConnectAggregateMetricTypeMap[key]!!]
+                            val value =
+                                    replyMapper.convertValue( periodResult.result[HealthConnectAggregateMetricTypeMap[key]!!],Any::class.java)
+
+
                             val resultMap = mapOf(
                                     "startTime" to periodStartTime,
                                     "endTime" to periodEndTime,
                                     "type" to key,
                                     "value" to value
                             )
-                            resultList.add(replyMapper.convertValue(resultMap,Any::class.java))
+                            resultList.add(resultMap)
                         }
                     }
                     result.success(resultList)
@@ -862,14 +865,15 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         val periodStartTime = periodResult.startTime.toString()
                         val periodEndTime = periodResult.endTime.toString()
                         for (key in aggregationKeys) {
-                            val value = periodResult.result[HealthConnectAggregateMetricTypeMap[key]!!]
-               val resultMap = mapOf(
-                       "startTime" to periodStartTime,
-                       "endTime" to periodEndTime,
-                       "type" to key,
-                       "value" to value
-               )
-                            resultList.add(replyMapper.convertValue(resultMap,Any::class.java))
+                            val value =
+                                    replyMapper.convertValue( periodResult.result[HealthConnectAggregateMetricTypeMap[key]!!],Any::class.java)
+                            val resultMap = mapOf(
+                                    "startTime" to periodStartTime,
+                                    "endTime" to periodEndTime,
+                                    "type" to key,
+                                    "value" to value
+                            )
+                            resultList.add(resultMap)
                         }
                     }
                     result.success(resultList)
