@@ -865,14 +865,14 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                         val periodStartTime = it.startTime.toString()
                         val periodEndTime = it.endTime.toString()
                         for (key in aggregationKeys) {
-                            val value =
-                                    replyMapper.convertValue( it.result[HealthConnectAggregateMetricTypeMap[key]!!],Any::class.java)
+//                            val value =
+//                                    replyMapper.convertValue( it.result[HealthConnectAggregateMetricTypeMap[key]!!],Any::class.java)
 
                             val resultMap = mapOf(
                                     "startTime" to periodStartTime,
                                     "endTime" to periodEndTime,
                                     "type" to key,
-                                    "value" to value
+                                    "value" to  it.result[HealthConnectAggregateMetricTypeMap[key]!!].toString()
                             )
                             println( resultMap)
                             resultList.add(resultMap)
