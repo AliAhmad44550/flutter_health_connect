@@ -20,6 +20,9 @@ import androidx.health.connect.client.units.Energy
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.annotation.PropertyAccessor
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility
+
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -54,7 +57,8 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
         context = flutterPluginBinding.applicationContext
         client = HealthConnectClient.getOrCreate(context!!)
         replyMapper.registerModule(JavaTimeModule())
-        replyMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+        replyMapper.setVisibility(PropertyAccessor.ALL, Visibility.ANY)
+//        replyMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
          replyMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
     }
 
