@@ -76,7 +76,7 @@ val HealthConnectRecordTypeMap = hashMapOf(
     RESTING_HEART_RATE to RestingHeartRateRecord::class,
     SEXUAL_ACTIVITY to SexualActivityRecord::class,
     SLEEP_SESSION to SleepSessionRecord::class,
-    SLEEP_STAGE to SleepStageRecord::class,
+//    SLEEP_STAGE to SleepStageRecord::class,
     SPEED to SpeedRecord::class,
     STEPS_CADENCE to StepsCadenceRecord::class,
     STEPS to StepsRecord::class,

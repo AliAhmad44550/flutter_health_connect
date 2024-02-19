@@ -232,6 +232,7 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                 }
             }
 
+
             "getRecords" -> {
                 scope.launch {
                     val type = call.argument<String>("type") ?: ""
@@ -243,26 +244,30 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                     val records = mutableListOf<Map<String, Any?>>()
                     try {
                         val start =
-                            startTime?.let { Instant.parse(it) } ?: Instant.now()
-                                .minus(1, ChronoUnit.DAYS)
+                                startTime?.let { Instant.parse(it) } ?: Instant.now()
+                                        .minus(1, ChronoUnit.DAYS)
                         val end = endTime?.let { Instant.parse(it) } ?: Instant.now()
                         HealthConnectRecordTypeMap[type]?.let { classType ->
                             val reply = client.readRecords(
-                                ReadRecordsRequest(
-                                    recordType = classType,
-                                    timeRangeFilter = TimeRangeFilter.between(start, end),
-                                    pageSize = pageSize,
-                                    pageToken = pageToken,
-                                    ascendingOrder = ascendingOrder,
-                                )
+                                    ReadRecordsRequest(
+                                            recordType = classType,
+                                            timeRangeFilter = TimeRangeFilter.between(start, end),
+                                            pageSize = pageSize,
+                                            pageToken = pageToken,
+                                            ascendingOrder = ascendingOrder,
+                                    )
                             )
                             reply.records.forEach {
-                                records.add(
-                                    replyMapper.convertValue(
-                                        it,
-                                        hashMapOf<String, Any?>()::class.java
+                                if (it::class == classType) {
+                                    records.add(
+                                            replyMapper.convertValue(
+                                                    it,
+                                                    hashMapOf<String, Any?>()::class.java
+                                            )
                                     )
-                                )
+                                } else {
+                                    result.error("GET_RECORDS_FAIL", "Could not retrieve $type", null)
+                                }
                             }
                             result.success(records)
                         } ?: throw Throwable("Unsupported type $type")
@@ -647,14 +652,14 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                             notes = recordMap["notes"] as String?,
                             metadata = metadata,
                         )
-                        SLEEP_STAGE -> SleepStageRecord(
-                            startTime = Instant.parse(recordMap["startTime"] as String),
-                            startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
-                            endTime = Instant.parse(recordMap["endTime"] as String),
-                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
-                            stage = recordMap["stage"] as Int,
-                            metadata = metadata,
-                        )
+//                        SLEEP_STAGE -> SleepStageRecord(
+//                            startTime = Instant.parse(recordMap["startTime"] as String),
+//                            startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
+//                            endTime = Instant.parse(recordMap["endTime"] as String),
+//                            endZoneOffset = if (recordMap["endTimeOffset"] != null) ZoneOffset.ofHours(recordMap["endZoneOffset"] as Int) else null,
+//                            stage = recordMap["stage"] as Int,
+//                            metadata = metadata,
+//                        )
                         SPEED -> SpeedRecord(
                             startTime = Instant.parse(recordMap["startTime"] as String),
                             startZoneOffset = if (recordMap["startZoneOffset"] != null) ZoneOffset.ofHours(recordMap["startZoneOffset"] as Int) else null,
