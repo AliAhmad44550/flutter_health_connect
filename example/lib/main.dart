@@ -58,14 +58,14 @@ class _MyAppState extends State<MyApp> {
   // ];
 
   List<HealthConnectDataType> types = [
-    HealthConnectDataType.Steps,
+    // HealthConnectDataType.Steps,
     HealthConnectDataType.BodyFat,
-    HealthConnectDataType.Weight,
-    HealthConnectDataType.ActiveCaloriesBurned,
+    // HealthConnectDataType.Weight,
+    // HealthConnectDataType.ActiveCaloriesBurned,
     HealthConnectDataType.HeartRateVariabilityRmssd,
-    HealthConnectDataType.RestingHeartRate,
-    HealthConnectDataType.Distance,
-    HealthConnectDataType.SleepSession,
+    // HealthConnectDataType.RestingHeartRate,
+    // HealthConnectDataType.Distance,
+    // HealthConnectDataType.SleepSession,
     // HealthConnectDataType.Nutrition,
   ];
 
