@@ -8,7 +8,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.PermissionController
-import androidx.health.connect.client.PermissionController.Companion.createRequestPermissionResultContract
 import androidx.health.connect.client.changes.UpsertionChange
 import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
@@ -161,7 +160,16 @@ class FlutterHealthConnectPlugin(private var channel: MethodChannel? = null) : F
                     result.error("UNABLE_TO_START_ACTIVITY", e.message, e)
                 }
             }
-
+            "revokeAllPermissions" -> {
+                scope.launch {
+                    try {
+                        client.permissionController.revokeAllPermissions()
+                        result.success(true)
+                    } catch (e: Throwable) {
+                        result.error("REVOKE_ALL_PERMISSIONS_FAIL", e.localizedMessage, e)
+                    }
+                }
+            }
             "getChanges" -> {
                 val token = call.argument<String>("token") ?: ""
                 scope.launch {
