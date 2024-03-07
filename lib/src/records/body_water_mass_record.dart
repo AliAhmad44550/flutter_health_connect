@@ -1,6 +1,7 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/units/mass.dart';
 
+import '../../flutter_health_connect.dart';
 import 'metadata/metadata.dart';
 
 class BodyWaterMassRecord extends InstantaneousRecord {
@@ -17,17 +18,12 @@ class BodyWaterMassRecord extends InstantaneousRecord {
     this.zoneOffset,
     required this.mass,
     metadata,
-  })  : assert(mass.inKilograms >= _minBodyWaterMass.inKilograms &&
-            mass.inKilograms <= _maxBodyWaterMass.inKilograms),
+  })  : assert(mass.inKilograms >= _minBodyWaterMass.inKilograms && mass.inKilograms <= _maxBodyWaterMass.inKilograms),
         metadata = metadata ?? Metadata.empty();
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is BodyWaterMassRecord &&
-          time == other.time &&
-          zoneOffset == other.zoneOffset &&
-          mass == other.mass;
+      identical(this, other) || other is BodyWaterMassRecord && time == other.time && zoneOffset == other.zoneOffset && mass == other.mass;
 
   @override
   int get hashCode => time.hashCode ^ zoneOffset.hashCode ^ mass.hashCode;
@@ -49,9 +45,7 @@ class BodyWaterMassRecord extends InstantaneousRecord {
   factory BodyWaterMassRecord.fromMap(Map<String, dynamic> map) {
     return BodyWaterMassRecord(
         time: DateTime.parse(map['time']),
-        zoneOffset: map['zoneOffset'] != null
-            ? Duration(hours: map['zoneOffset'] as int)
-            : null,
+        zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
         mass: Mass.fromMap(Map<String, dynamic>.from(map['mass'])));
   }

@@ -1,6 +1,7 @@
 import 'package:flutter_health_connect/src/records/series_record.dart';
 import 'package:flutter_health_connect/src/units/power.dart';
 
+import '../../flutter_health_connect.dart';
 import 'metadata/metadata.dart';
 
 class PowerRecord extends SeriesRecord<PowerSample> {
@@ -34,8 +35,7 @@ class PowerRecord extends SeriesRecord<PowerSample> {
     this.startZoneOffset,
     metadata,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime.");
+        assert(startTime.isBefore(endTime), "startTime must not be after endTime.");
 
   @override
   bool operator ==(Object other) =>
@@ -48,12 +48,7 @@ class PowerRecord extends SeriesRecord<PowerSample> {
           startZoneOffset == other.startZoneOffset;
 
   @override
-  int get hashCode =>
-      endTime.hashCode ^
-      endZoneOffset.hashCode ^
-      samples.hashCode ^
-      startTime.hashCode ^
-      startZoneOffset.hashCode;
+  int get hashCode => endTime.hashCode ^ endZoneOffset.hashCode ^ samples.hashCode ^ startTime.hashCode ^ startZoneOffset.hashCode;
 
   @override
   Map<String, dynamic> toMap() {
@@ -70,17 +65,12 @@ class PowerRecord extends SeriesRecord<PowerSample> {
   @override
   factory PowerRecord.fromMap(Map<String, dynamic> map) {
     return PowerRecord(
+      startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] == null
-          ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+      endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] == null
-          ? null
-          : Duration(hours: map['startZoneOffset'] as int),
-      samples: List<PowerSample>.from(
-          map['samples']?.map((x) => PowerSample.fromMap(x))),
+      samples: List<PowerSample>.from(map['samples']?.map((x) => PowerSample.fromMap(x))),
     );
   }
 
@@ -97,13 +87,10 @@ class PowerSample {
   PowerSample({
     required this.power,
     required this.time,
-  }) : assert(power.inWatts >= _minPower.inWatts &&
-            power.inWatts <= _maxPower.inWatts);
+  }) : assert(power.inWatts >= _minPower.inWatts && power.inWatts <= _maxPower.inWatts);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PowerSample && power == other.power && time == other.time;
+  bool operator ==(Object other) => identical(this, other) || other is PowerSample && power == other.power && time == other.time;
 
   @override
   int get hashCode => power.hashCode ^ time.hashCode;

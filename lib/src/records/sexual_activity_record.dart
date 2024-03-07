@@ -1,6 +1,8 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 
+import '../../flutter_health_connect.dart';
+
 class SexualActivityRecord extends InstantaneousRecord {
   @override
   Metadata metadata;
@@ -20,14 +22,10 @@ class SexualActivityRecord extends InstantaneousRecord {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SexualActivityRecord &&
-          time == other.time &&
-          zoneOffset == other.zoneOffset &&
-          protectionUsed == other.protectionUsed;
+      other is SexualActivityRecord && time == other.time && zoneOffset == other.zoneOffset && protectionUsed == other.protectionUsed;
 
   @override
-  int get hashCode =>
-      time.hashCode ^ zoneOffset.hashCode ^ protectionUsed.hashCode;
+  int get hashCode => time.hashCode ^ zoneOffset.hashCode ^ protectionUsed.hashCode;
 
   @override
   Map<String, dynamic> toMap() {
@@ -43,12 +41,9 @@ class SexualActivityRecord extends InstantaneousRecord {
   factory SexualActivityRecord.fromMap(Map<String, dynamic> map) {
     return SexualActivityRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-      protectionUsed: (map['protectionUsed'] != null &&
-              map['protectionUsed'] < Protection.values.length)
+      protectionUsed: (map['protectionUsed'] != null && map['protectionUsed'] < Protection.values.length)
           ? Protection.values[map['protectionUsed'] as int]
           : Protection.unknown,
     );

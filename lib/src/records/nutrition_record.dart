@@ -3,6 +3,7 @@ import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/energy.dart';
 import 'package:flutter_health_connect/src/units/mass.dart';
 
+import '../../flutter_health_connect.dart';
 import 'meal_type.dart';
 
 class NutritionRecord extends IntervalRecord {
@@ -10,45 +11,37 @@ class NutritionRecord extends IntervalRecord {
   static const String aggregationKeyBiotinTotal = 'NutritionRecordBiotinTotal';
 
   /// Unit: grams
-  static const String aggregationKeyCaffeineTotal =
-      'NutritionRecordCaffeineTotal';
+  static const String aggregationKeyCaffeineTotal = 'NutritionRecordCaffeineTotal';
 
   /// Unit: grams
-  static const String aggregationKeyCalciumTotal =
-      'NutritionRecordCalciumTotal';
+  static const String aggregationKeyCalciumTotal = 'NutritionRecordCalciumTotal';
 
   /// Unit: kilocalories
   static const String aggregationKeyEnergyTotal = 'NutritionRecordEnergyTotal';
 
   /// Unit: kilocalories
-  static const String aggregationKeyEnergyFromFatTotal =
-      'NutritionRecordEnergyFromFatTotal';
+  static const String aggregationKeyEnergyFromFatTotal = 'NutritionRecordEnergyFromFatTotal';
 
   /// Unit: grams
-  static const String aggregationKeyChlorideTotal =
-      'NutritionRecordChlorideTotal';
+  static const String aggregationKeyChlorideTotal = 'NutritionRecordChlorideTotal';
 
   /// Unit: grams
-  static const String aggregationKeyCholesterolTotal =
-      'NutritionRecordCholesterolTotal';
+  static const String aggregationKeyCholesterolTotal = 'NutritionRecordCholesterolTotal';
 
   /// Unit: grams
-  static const String aggregationKeyChromiumTotal =
-      'NutritionRecordChromiumTotal';
+  static const String aggregationKeyChromiumTotal = 'NutritionRecordChromiumTotal';
 
   /// Unit: grams
   static const String aggregationKeyCopperTotal = 'NutritionRecordCopperTotal';
 
   /// Unit: grams
-  static const String aggregationKeyDietaryFiberTotal =
-      'NutritionRecordDietaryFiberTotal';
+  static const String aggregationKeyDietaryFiberTotal = 'NutritionRecordDietaryFiberTotal';
 
   /// Unit: grams
   static const String aggregationKeyFolateTotal = 'NutritionRecordFolateTotal';
 
   /// Unit: grams
-  static const String aggregationKeyFolicAcidTotal =
-      'NutritionRecordFolicAcidTotal';
+  static const String aggregationKeyFolicAcidTotal = 'NutritionRecordFolicAcidTotal';
 
   /// Unit: grams
   static const String aggregationKeyIodineTotal = 'NutritionRecordIodineTotal';
@@ -57,55 +50,43 @@ class NutritionRecord extends IntervalRecord {
   static const String aggregationKeyIronTotal = 'NutritionRecordIronTotal';
 
   /// Unit: grams
-  static const String aggregationKeyMagnesiumTotal =
-      'NutritionRecordMagnesiumTotal';
+  static const String aggregationKeyMagnesiumTotal = 'NutritionRecordMagnesiumTotal';
 
   /// Unit: grams
-  static const String aggregationKeyManganeseTotal =
-      'NutritionRecordManganeseTotal';
+  static const String aggregationKeyManganeseTotal = 'NutritionRecordManganeseTotal';
 
   /// Unit: grams
-  static const String aggregationKeyMolybdenumTotal =
-      'NutritionRecordMolybdenumTotal';
+  static const String aggregationKeyMolybdenumTotal = 'NutritionRecordMolybdenumTotal';
 
   /// Unit: grams
-  static const String aggregationKeyMonounsaturatedFatTotal =
-      'NutritionRecordMonounsaturatedFatTotal';
+  static const String aggregationKeyMonounsaturatedFatTotal = 'NutritionRecordMonounsaturatedFatTotal';
 
   /// Unit: grams
   static const String aggregationKeyNiacinTotal = 'NutritionRecordNiacinTotal';
 
   /// Unit: grams
-  static const String aggregationKeyPantothenicAcidTotal =
-      'NutritionRecordPantothenicAcidTotal';
+  static const String aggregationKeyPantothenicAcidTotal = 'NutritionRecordPantothenicAcidTotal';
 
   /// Unit: grams
-  static const String aggregationKeyPhosphorusTotal =
-      'NutritionRecordPhosphorusTotal';
+  static const String aggregationKeyPhosphorusTotal = 'NutritionRecordPhosphorusTotal';
 
   /// Unit: grams
-  static const String aggregationKeyPolyunsaturatedFatTotal =
-      'NutritionRecordPolyunsaturatedFatTotal';
+  static const String aggregationKeyPolyunsaturatedFatTotal = 'NutritionRecordPolyunsaturatedFatTotal';
 
   /// Unit: grams
-  static const String aggregationKeyPotassiumTotal =
-      'NutritionRecordPotassiumTotal';
+  static const String aggregationKeyPotassiumTotal = 'NutritionRecordPotassiumTotal';
 
   /// Unit: grams
-  static const String aggregationKeyProteinTotal =
-      'NutritionRecordProteinTotal';
+  static const String aggregationKeyProteinTotal = 'NutritionRecordProteinTotal';
 
   /// Unit: grams
-  static const String aggregationKeyRiboflavinTotal =
-      'NutritionRecordRiboflavinTotal';
+  static const String aggregationKeyRiboflavinTotal = 'NutritionRecordRiboflavinTotal';
 
   /// Unit: grams
-  static const String aggregationKeySaturatedFatTotal =
-      'NutritionRecordSaturatedFatTotal';
+  static const String aggregationKeySaturatedFatTotal = 'NutritionRecordSaturatedFatTotal';
 
   /// Unit: grams
-  static const String aggregationKeySeleniumTotal =
-      'NutritionRecordSeleniumTotal';
+  static const String aggregationKeySeleniumTotal = 'NutritionRecordSeleniumTotal';
 
   /// Unit: grams
   static const String aggregationKeySodiumTotal = 'NutritionRecordSodiumTotal';
@@ -114,52 +95,40 @@ class NutritionRecord extends IntervalRecord {
   static const String aggregationKeySugarTotal = 'NutritionRecordSugarTotal';
 
   /// Unit: grams
-  static const String aggregationKeyThiaminTotal =
-      'NutritionRecordThiaminTotal';
+  static const String aggregationKeyThiaminTotal = 'NutritionRecordThiaminTotal';
 
   /// Unit: grams
-  static const String aggregationKeyTotalCarbohydrateTotal =
-      'NutritionRecordTotalCarbohydrateTotal';
+  static const String aggregationKeyTotalCarbohydrateTotal = 'NutritionRecordTotalCarbohydrateTotal';
 
   /// Unit: grams
-  static const String aggregationKeyTotalFatTotal =
-      'NutritionRecordTotalFatTotal';
+  static const String aggregationKeyTotalFatTotal = 'NutritionRecordTotalFatTotal';
 
   /// Unit: grams
-  static const String aggregationKeyTransFatTotal =
-      'NutritionRecordTransFatTotal';
+  static const String aggregationKeyTransFatTotal = 'NutritionRecordTransFatTotal';
 
   /// Unit: grams
-  static const String aggregationKeyUnsaturatedFatTotal =
-      'NutritionRecordUnsaturatedFatTotal';
+  static const String aggregationKeyUnsaturatedFatTotal = 'NutritionRecordUnsaturatedFatTotal';
 
   /// Unit: grams
-  static const String aggregationKeyVitaminATotal =
-      'NutritionRecordVitaminATotal';
+  static const String aggregationKeyVitaminATotal = 'NutritionRecordVitaminATotal';
 
   /// Unit: grams
-  static const String aggregationKeyVitaminB12Total =
-      'NutritionRecordVitaminB12Total';
+  static const String aggregationKeyVitaminB12Total = 'NutritionRecordVitaminB12Total';
 
   /// Unit: grams
-  static const String aggregationKeyVitaminB6Total =
-      'NutritionRecordVitaminB6Total';
+  static const String aggregationKeyVitaminB6Total = 'NutritionRecordVitaminB6Total';
 
   /// Unit: grams
-  static const String aggregationKeyVitaminCTotal =
-      'NutritionRecordVitaminCTotal';
+  static const String aggregationKeyVitaminCTotal = 'NutritionRecordVitaminCTotal';
 
   /// Unit: grams
-  static const String aggregationKeyVitaminDTotal =
-      'NutritionRecordVitaminDTotal';
+  static const String aggregationKeyVitaminDTotal = 'NutritionRecordVitaminDTotal';
 
   /// Unit: grams
-  static const String aggregationKeyVitaminETotal =
-      'NutritionRecordVitaminETotal';
+  static const String aggregationKeyVitaminETotal = 'NutritionRecordVitaminETotal';
 
   /// Unit: grams
-  static const String aggregationKeyVitaminKTotal =
-      'NutritionRecordVitaminKTotal';
+  static const String aggregationKeyVitaminKTotal = 'NutritionRecordVitaminKTotal';
 
   /// Unit: grams
   static const String aggregationKeyZincTotal = 'NutritionRecordZincTotal';
@@ -270,218 +239,66 @@ class NutritionRecord extends IntervalRecord {
     this.name,
     this.mealType = MealType.unknown,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime."),
-        assert(
-            biotin == null ||
-                (biotin.inGrams >= _minMass.inGrams &&
-                    biotin.inGrams <= _maxMass100.inGrams),
-            "biotin"),
-        assert(
-            caffeine == null ||
-                (caffeine.inGrams >= _minMass.inGrams &&
-                    caffeine.inGrams <= _maxMass100.inGrams),
-            "caffeine"),
-        assert(
-            calcium == null ||
-                (calcium.inGrams >= _minMass.inGrams &&
-                    calcium.inGrams <= _maxMass100.inGrams),
-            "calcium"),
-        assert(
-            energy == null ||
-                (energy.inCalories >= _minEnergy.inCalories &&
-                    energy.inCalories <= _maxEnergy.inCalories),
-            "energy"),
+        assert(startTime.isBefore(endTime), "startTime must not be after endTime."),
+        assert(biotin == null || (biotin.inGrams >= _minMass.inGrams && biotin.inGrams <= _maxMass100.inGrams), "biotin"),
+        assert(caffeine == null || (caffeine.inGrams >= _minMass.inGrams && caffeine.inGrams <= _maxMass100.inGrams), "caffeine"),
+        assert(calcium == null || (calcium.inGrams >= _minMass.inGrams && calcium.inGrams <= _maxMass100.inGrams), "calcium"),
+        assert(energy == null || (energy.inCalories >= _minEnergy.inCalories && energy.inCalories <= _maxEnergy.inCalories), "energy"),
         assert(
             energyFromFat == null ||
-                (energyFromFat.inCalories >= _minEnergy.inCalories &&
-                    energyFromFat.inCalories <= _maxEnergy.inCalories),
+                (energyFromFat.inCalories >= _minEnergy.inCalories && energyFromFat.inCalories <= _maxEnergy.inCalories),
             "energyFromFat"),
+        assert(chloride == null || (chloride.inGrams >= _minMass.inGrams && chloride.inGrams <= _maxMass100.inGrams), "chloride"),
         assert(
-            chloride == null ||
-                (chloride.inGrams >= _minMass.inGrams &&
-                    chloride.inGrams <= _maxMass100.inGrams),
-            "chloride"),
-        assert(
-            cholesterol == null ||
-                (cholesterol.inGrams >= _minMass.inGrams &&
-                    cholesterol.inGrams <= _maxMass100.inGrams),
-            "cholesterol"),
-        assert(
-            chromium == null ||
-                (chromium.inGrams >= _minMass.inGrams &&
-                    chromium.inGrams <= _maxMass100.inGrams),
-            "chromium"),
-        assert(
-            copper == null ||
-                (copper.inGrams >= _minMass.inGrams &&
-                    copper.inGrams <= _maxMass100.inGrams),
-            "copper"),
-        assert(
-            dietaryFiber == null ||
-                (dietaryFiber.inGrams >= _minMass.inGrams &&
-                    dietaryFiber.inGrams <= _maxMass100K.inGrams),
+            cholesterol == null || (cholesterol.inGrams >= _minMass.inGrams && cholesterol.inGrams <= _maxMass100.inGrams), "cholesterol"),
+        assert(chromium == null || (chromium.inGrams >= _minMass.inGrams && chromium.inGrams <= _maxMass100.inGrams), "chromium"),
+        assert(copper == null || (copper.inGrams >= _minMass.inGrams && copper.inGrams <= _maxMass100.inGrams), "copper"),
+        assert(dietaryFiber == null || (dietaryFiber.inGrams >= _minMass.inGrams && dietaryFiber.inGrams <= _maxMass100K.inGrams),
             "dietaryFiber"),
-        assert(
-            folate == null ||
-                (folate.inGrams >= _minMass.inGrams &&
-                    folate.inGrams <= _maxMass100.inGrams),
-            "folate"),
-        assert(
-            folicAcid == null ||
-                (folicAcid.inGrams >= _minMass.inGrams &&
-                    folicAcid.inGrams <= _maxMass100.inGrams),
-            "folicAcid"),
-        assert(
-            iodine == null ||
-                (iodine.inGrams >= _minMass.inGrams &&
-                    iodine.inGrams <= _maxMass100.inGrams),
-            "iodine"),
-        assert(
-            iron == null ||
-                (iron.inGrams >= _minMass.inGrams &&
-                    iron.inGrams <= _maxMass100.inGrams),
-            "iron"),
-        assert(
-            magnesium == null ||
-                (magnesium.inGrams >= _minMass.inGrams &&
-                    magnesium.inGrams <= _maxMass100.inGrams),
-            "magnesium"),
-        assert(
-            manganese == null ||
-                (manganese.inGrams >= _minMass.inGrams &&
-                    manganese.inGrams <= _maxMass100.inGrams),
-            "manganese"),
-        assert(
-            molybdenum == null ||
-                (molybdenum.inGrams >= _minMass.inGrams &&
-                    molybdenum.inGrams <= _maxMass100.inGrams),
-            "molybdenum"),
+        assert(folate == null || (folate.inGrams >= _minMass.inGrams && folate.inGrams <= _maxMass100.inGrams), "folate"),
+        assert(folicAcid == null || (folicAcid.inGrams >= _minMass.inGrams && folicAcid.inGrams <= _maxMass100.inGrams), "folicAcid"),
+        assert(iodine == null || (iodine.inGrams >= _minMass.inGrams && iodine.inGrams <= _maxMass100.inGrams), "iodine"),
+        assert(iron == null || (iron.inGrams >= _minMass.inGrams && iron.inGrams <= _maxMass100.inGrams), "iron"),
+        assert(magnesium == null || (magnesium.inGrams >= _minMass.inGrams && magnesium.inGrams <= _maxMass100.inGrams), "magnesium"),
+        assert(manganese == null || (manganese.inGrams >= _minMass.inGrams && manganese.inGrams <= _maxMass100.inGrams), "manganese"),
+        assert(molybdenum == null || (molybdenum.inGrams >= _minMass.inGrams && molybdenum.inGrams <= _maxMass100.inGrams), "molybdenum"),
         assert(
             monounsaturatedFat == null ||
-                (monounsaturatedFat.inGrams >= _minMass.inGrams &&
-                    monounsaturatedFat.inGrams <= _maxMass100K.inGrams),
+                (monounsaturatedFat.inGrams >= _minMass.inGrams && monounsaturatedFat.inGrams <= _maxMass100K.inGrams),
             "monounsaturatedFat"),
-        assert(
-            niacin == null ||
-                (niacin.inGrams >= _minMass.inGrams &&
-                    niacin.inGrams <= _maxMass100.inGrams),
-            "niacin"),
-        assert(
-            pantothenicAcid == null ||
-                (pantothenicAcid.inGrams >= _minMass.inGrams &&
-                    pantothenicAcid.inGrams <= _maxMass100.inGrams),
+        assert(niacin == null || (niacin.inGrams >= _minMass.inGrams && niacin.inGrams <= _maxMass100.inGrams), "niacin"),
+        assert(pantothenicAcid == null || (pantothenicAcid.inGrams >= _minMass.inGrams && pantothenicAcid.inGrams <= _maxMass100.inGrams),
             "pantothenicAcid"),
-        assert(
-            phosphorus == null ||
-                (phosphorus.inGrams >= _minMass.inGrams &&
-                    phosphorus.inGrams <= _maxMass100.inGrams),
-            "phosphorus"),
+        assert(phosphorus == null || (phosphorus.inGrams >= _minMass.inGrams && phosphorus.inGrams <= _maxMass100.inGrams), "phosphorus"),
         assert(
             polyunsaturatedFat == null ||
-                (polyunsaturatedFat.inGrams >= _minMass.inGrams &&
-                    polyunsaturatedFat.inGrams <= _maxMass100K.inGrams),
+                (polyunsaturatedFat.inGrams >= _minMass.inGrams && polyunsaturatedFat.inGrams <= _maxMass100K.inGrams),
             "polyunsaturatedFat"),
-        assert(
-            potassium == null ||
-                (potassium.inGrams >= _minMass.inGrams &&
-                    potassium.inGrams <= _maxMass100.inGrams),
-            "potassium"),
-        assert(
-            protein == null ||
-                (protein.inGrams >= _minMass.inGrams &&
-                    protein.inGrams <= _maxMass100K.inGrams),
-            "protein"),
-        assert(
-            riboflavin == null ||
-                (riboflavin.inGrams >= _minMass.inGrams &&
-                    riboflavin.inGrams <= _maxMass100.inGrams),
-            "riboflavin"),
-        assert(
-            saturatedFat == null ||
-                (saturatedFat.inGrams >= _minMass.inGrams &&
-                    saturatedFat.inGrams <= _maxMass100K.inGrams),
+        assert(potassium == null || (potassium.inGrams >= _minMass.inGrams && potassium.inGrams <= _maxMass100.inGrams), "potassium"),
+        assert(protein == null || (protein.inGrams >= _minMass.inGrams && protein.inGrams <= _maxMass100K.inGrams), "protein"),
+        assert(riboflavin == null || (riboflavin.inGrams >= _minMass.inGrams && riboflavin.inGrams <= _maxMass100.inGrams), "riboflavin"),
+        assert(saturatedFat == null || (saturatedFat.inGrams >= _minMass.inGrams && saturatedFat.inGrams <= _maxMass100K.inGrams),
             "saturatedFat"),
-        assert(
-            selenium == null ||
-                (selenium.inGrams >= _minMass.inGrams &&
-                    selenium.inGrams <= _maxMass100.inGrams),
-            "selenium"),
-        assert(
-            sodium == null ||
-                (sodium.inGrams >= _minMass.inGrams &&
-                    sodium.inGrams <= _maxMass100.inGrams),
-            "sodium"),
-        assert(
-            sugar == null ||
-                (sugar.inGrams >= _minMass.inGrams &&
-                    sugar.inGrams <= _maxMass100K.inGrams),
-            "sugar"),
-        assert(
-            thiamin == null ||
-                (thiamin.inGrams >= _minMass.inGrams &&
-                    thiamin.inGrams <= _maxMass100.inGrams),
-            "thiamin"),
+        assert(selenium == null || (selenium.inGrams >= _minMass.inGrams && selenium.inGrams <= _maxMass100.inGrams), "selenium"),
+        assert(sodium == null || (sodium.inGrams >= _minMass.inGrams && sodium.inGrams <= _maxMass100.inGrams), "sodium"),
+        assert(sugar == null || (sugar.inGrams >= _minMass.inGrams && sugar.inGrams <= _maxMass100K.inGrams), "sugar"),
+        assert(thiamin == null || (thiamin.inGrams >= _minMass.inGrams && thiamin.inGrams <= _maxMass100.inGrams), "thiamin"),
         assert(
             totalCarbohydrates == null ||
-                (totalCarbohydrates.inGrams >= _minMass.inGrams &&
-                    totalCarbohydrates.inGrams <= _maxMass100K.inGrams),
+                (totalCarbohydrates.inGrams >= _minMass.inGrams && totalCarbohydrates.inGrams <= _maxMass100K.inGrams),
             "totalCarbohydrates"),
-        assert(
-            totalFat == null ||
-                (totalFat.inGrams >= _minMass.inGrams &&
-                    totalFat.inGrams <= _maxMass100K.inGrams),
-            "totalFat"),
-        assert(
-            transFat == null ||
-                (transFat.inGrams >= _minMass.inGrams &&
-                    transFat.inGrams <= _maxMass100K.inGrams),
-            "transFat"),
-        assert(
-            unsaturatedFat == null ||
-                (unsaturatedFat.inGrams >= _minMass.inGrams &&
-                    unsaturatedFat.inGrams <= _maxMass100K.inGrams),
+        assert(totalFat == null || (totalFat.inGrams >= _minMass.inGrams && totalFat.inGrams <= _maxMass100K.inGrams), "totalFat"),
+        assert(transFat == null || (transFat.inGrams >= _minMass.inGrams && transFat.inGrams <= _maxMass100K.inGrams), "transFat"),
+        assert(unsaturatedFat == null || (unsaturatedFat.inGrams >= _minMass.inGrams && unsaturatedFat.inGrams <= _maxMass100K.inGrams),
             "unsaturatedFat"),
-        assert(
-            vitaminA == null ||
-                (vitaminA.inGrams >= _minMass.inGrams &&
-                    vitaminA.inGrams <= _maxMass100.inGrams),
-            "vitaminA"),
-        assert(
-            vitaminB12 == null ||
-                (vitaminB12.inGrams >= _minMass.inGrams &&
-                    vitaminB12.inGrams <= _maxMass100.inGrams),
-            "vitaminB12"),
-        assert(
-            vitaminB6 == null ||
-                (vitaminB6.inGrams >= _minMass.inGrams &&
-                    vitaminB6.inGrams <= _maxMass100.inGrams),
-            "vitaminB6"),
-        assert(
-            vitaminC == null ||
-                (vitaminC.inGrams >= _minMass.inGrams &&
-                    vitaminC.inGrams <= _maxMass100.inGrams),
-            "vitaminC"),
-        assert(
-            vitaminD == null ||
-                (vitaminD.inGrams >= _minMass.inGrams &&
-                    vitaminD.inGrams <= _maxMass100.inGrams),
-            "vitaminD"),
-        assert(
-            vitaminE == null ||
-                (vitaminE.inGrams >= _minMass.inGrams &&
-                    vitaminE.inGrams <= _maxMass100.inGrams),
-            "vitaminE"),
-        assert(
-            vitaminK == null ||
-                (vitaminK.inGrams >= _minMass.inGrams &&
-                    vitaminK.inGrams <= _maxMass100.inGrams),
-            "vitaminK"),
-        assert(
-            zinc == null ||
-                (zinc.inGrams >= _minMass.inGrams &&
-                    zinc.inGrams <= _maxMass100.inGrams),
-            "zinc");
+        assert(vitaminA == null || (vitaminA.inGrams >= _minMass.inGrams && vitaminA.inGrams <= _maxMass100.inGrams), "vitaminA"),
+        assert(vitaminB12 == null || (vitaminB12.inGrams >= _minMass.inGrams && vitaminB12.inGrams <= _maxMass100.inGrams), "vitaminB12"),
+        assert(vitaminB6 == null || (vitaminB6.inGrams >= _minMass.inGrams && vitaminB6.inGrams <= _maxMass100.inGrams), "vitaminB6"),
+        assert(vitaminC == null || (vitaminC.inGrams >= _minMass.inGrams && vitaminC.inGrams <= _maxMass100.inGrams), "vitaminC"),
+        assert(vitaminD == null || (vitaminD.inGrams >= _minMass.inGrams && vitaminD.inGrams <= _maxMass100.inGrams), "vitaminD"),
+        assert(vitaminE == null || (vitaminE.inGrams >= _minMass.inGrams && vitaminE.inGrams <= _maxMass100.inGrams), "vitaminE"),
+        assert(vitaminK == null || (vitaminK.inGrams >= _minMass.inGrams && vitaminK.inGrams <= _maxMass100.inGrams), "vitaminK"),
+        assert(zinc == null || (zinc.inGrams >= _minMass.inGrams && zinc.inGrams <= _maxMass100.inGrams), "zinc");
 
   static const Mass _minMass = Mass.grams(0);
   static const Mass _maxMass100 = Mass.grams(100);
@@ -642,143 +459,56 @@ class NutritionRecord extends IntervalRecord {
   @override
   factory NutritionRecord.fromMap(Map<String, dynamic> map) {
     return NutritionRecord(
+      startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] == null
-          ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+      endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] == null
-          ? null
-          : Duration(hours: map['startZoneOffset'] as int),
-      name: map['name'] as String,
-      mealType: (map['mealType'] != null &&
-              map['mealType'] as int < MealType.values.length)
+      name: map['name'] as String?,
+      mealType: (map['mealType'] != null && map['mealType'] as int < MealType.values.length)
           ? MealType.values[map['mealType'] as int]
           : MealType.unknown,
-      biotin: map['biotin'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['biotin'])),
-      caffeine: map['caffeine'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['caffeine'])),
-      calcium: map['calcium'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['calcium'])),
-      energy: map['energy'] == null
-          ? null
-          : Energy.fromMap(Map<String, dynamic>.from(map['energy'])),
-      energyFromFat: map['energyFromFat'] == null
-          ? null
-          : Energy.fromMap(Map<String, dynamic>.from(map['energyFromFat'])),
-      chloride: map['chloride'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['chloride'])),
-      cholesterol: map['cholesterol'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['cholesterol'])),
-      chromium: map['chromium'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['chromium'])),
-      copper: map['copper'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['copper'])),
-      dietaryFiber: map['dietaryFiber'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['dietaryFiber'])),
-      folate: map['folate'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['folate'])),
-      iodine: map['iodine'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['iodine'])),
-      iron: map['iron'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['iron'])),
-      magnesium: map['magnesium'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['magnesium'])),
-      manganese: map['manganese'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['manganese'])),
-      molybdenum: map['molybdenum'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['molybdenum'])),
-      monounsaturatedFat: map['monounsaturatedFat'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['monounsaturatedFat'])),
-      niacin: map['niacin'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['niacin'])),
-      pantothenicAcid: map['pantothenicAcid'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['pantothenicAcid'])),
-      phosphorus: map['phosphorus'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['phosphorus'])),
-      polyunsaturatedFat: map['polyunsaturatedFat'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['polyunsaturatedFat'])),
-      potassium: map['potassium'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['potassium'])),
-      protein: map['protein'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['protein'])),
-      riboflavin: map['riboflavin'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['riboflavin'])),
-      saturatedFat: map['saturatedFat'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['saturatedFat'])),
-      selenium: map['selenium'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['selenium'])),
-      sodium: map['sodium'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['sodium'])),
-      sugar: map['sugar'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['sugar'])),
-      thiamin: map['thiamin'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['thiamin'])),
-      totalCarbohydrates: map['totalCarbohydrates'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['totalCarbohydrates'])),
-      totalFat: map['totalFat'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['totalFat'])),
-      transFat: map['transFat'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['transFat'])),
-      unsaturatedFat: map['unsaturatedFat'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['unsaturatedFat'])),
-      vitaminA: map['vitaminA'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['vitaminA'])),
-      vitaminB12: map['vitaminB12'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['vitaminB12'])),
-      vitaminB6: map['vitaminB6'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['vitaminB6'])),
-      vitaminC: map['vitaminC'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['vitaminC'])),
-      vitaminD: map['vitaminD'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['vitaminD'])),
-      vitaminE: map['vitaminE'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['vitaminE'])),
-      vitaminK: map['vitaminK'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['vitaminK'])),
-      zinc: map['zinc'] == null
-          ? null
-          : Mass.fromMap(Map<String, dynamic>.from(map['zinc'])),
+      biotin: map['biotin'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['biotin'])),
+      caffeine: map['caffeine'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['caffeine'])),
+      calcium: map['calcium'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['calcium'])),
+      energy: map['energy'] == null ? null : Energy.fromMap(Map<String, dynamic>.from(map['energy'])),
+      energyFromFat: map['energyFromFat'] == null ? null : Energy.fromMap(Map<String, dynamic>.from(map['energyFromFat'])),
+      chloride: map['chloride'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['chloride'])),
+      cholesterol: map['cholesterol'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['cholesterol'])),
+      chromium: map['chromium'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['chromium'])),
+      copper: map['copper'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['copper'])),
+      dietaryFiber: map['dietaryFiber'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['dietaryFiber'])),
+      folate: map['folate'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['folate'])),
+      iodine: map['iodine'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['iodine'])),
+      iron: map['iron'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['iron'])),
+      magnesium: map['magnesium'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['magnesium'])),
+      manganese: map['manganese'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['manganese'])),
+      molybdenum: map['molybdenum'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['molybdenum'])),
+      monounsaturatedFat: map['monounsaturatedFat'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['monounsaturatedFat'])),
+      niacin: map['niacin'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['niacin'])),
+      pantothenicAcid: map['pantothenicAcid'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['pantothenicAcid'])),
+      phosphorus: map['phosphorus'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['phosphorus'])),
+      polyunsaturatedFat: map['polyunsaturatedFat'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['polyunsaturatedFat'])),
+      potassium: map['potassium'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['potassium'])),
+      protein: map['protein'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['protein'])),
+      riboflavin: map['riboflavin'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['riboflavin'])),
+      saturatedFat: map['saturatedFat'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['saturatedFat'])),
+      selenium: map['selenium'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['selenium'])),
+      sodium: map['sodium'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['sodium'])),
+      sugar: map['sugar'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['sugar'])),
+      thiamin: map['thiamin'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['thiamin'])),
+      totalCarbohydrates: map['totalCarbohydrates'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['totalCarbohydrates'])),
+      totalFat: map['totalFat'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['totalFat'])),
+      transFat: map['transFat'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['transFat'])),
+      unsaturatedFat: map['unsaturatedFat'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['unsaturatedFat'])),
+      vitaminA: map['vitaminA'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['vitaminA'])),
+      vitaminB12: map['vitaminB12'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['vitaminB12'])),
+      vitaminB6: map['vitaminB6'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['vitaminB6'])),
+      vitaminC: map['vitaminC'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['vitaminC'])),
+      vitaminD: map['vitaminD'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['vitaminD'])),
+      vitaminE: map['vitaminE'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['vitaminE'])),
+      vitaminK: map['vitaminK'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['vitaminK'])),
+      zinc: map['zinc'] == null ? null : Mass.fromMap(Map<String, dynamic>.from(map['zinc'])),
     );
   }
 

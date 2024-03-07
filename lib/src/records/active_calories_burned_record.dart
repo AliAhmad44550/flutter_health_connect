@@ -1,12 +1,12 @@
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/energy.dart';
 
+import '../../flutter_health_connect.dart';
 import 'interval_record.dart';
 
 class ActiveCaloriesBurnedRecord extends IntervalRecord {
   /// Unit: kilocalories
-  static const aggregationKeyActiveCaloriesTotal =
-      'ActiveCaloriesBurnedRecordActiveCaloriesTotal';
+  static const aggregationKeyActiveCaloriesTotal = 'ActiveCaloriesBurnedRecordActiveCaloriesTotal';
 
   Energy energy;
   @override
@@ -21,17 +21,10 @@ class ActiveCaloriesBurnedRecord extends IntervalRecord {
   Duration? startZoneOffset;
 
   ActiveCaloriesBurnedRecord(
-      {required this.startTime,
-      this.startZoneOffset,
-      required this.endTime,
-      this.endZoneOffset,
-      required this.energy,
-      metadata})
+      {required this.startTime, this.startZoneOffset, required this.endTime, this.endZoneOffset, required this.energy, metadata})
       : assert(energy.value >= 0, 'Energy must be positive'),
-        assert(
-            startTime.isBefore(endTime), 'Start time must be before end time'),
-        assert(energy.value <= maxEnergy.value,
-            'Energy must be less than $maxEnergy'),
+        assert(startTime.isBefore(endTime), 'Start time must be before end time'),
+        assert(energy.value <= maxEnergy.value, 'Energy must be less than $maxEnergy'),
         metadata = metadata ?? Metadata.empty();
 
   @override
@@ -47,12 +40,7 @@ class ActiveCaloriesBurnedRecord extends IntervalRecord {
 
   @override
   int get hashCode =>
-      energy.hashCode ^
-      endTime.hashCode ^
-      endZoneOffset.hashCode ^
-      metadata.hashCode ^
-      startTime.hashCode ^
-      startZoneOffset.hashCode;
+      energy.hashCode ^ endTime.hashCode ^ endZoneOffset.hashCode ^ metadata.hashCode ^ startTime.hashCode ^ startZoneOffset.hashCode;
 
   static Energy maxEnergy = const Energy.kilocalories(1000000);
 
@@ -72,13 +60,9 @@ class ActiveCaloriesBurnedRecord extends IntervalRecord {
   factory ActiveCaloriesBurnedRecord.fromMap(Map<String, dynamic> map) {
     return ActiveCaloriesBurnedRecord(
         startTime: DateTime.parse(map['startTime']),
-        startZoneOffset: map['startZoneOffset'] != null
-            ? Duration(hours: map['startZoneOffset'] as int)
-            : null,
+        startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
         endTime: DateTime.parse(map['endTime']),
-        endZoneOffset: map['endZoneOffset'] != null
-            ? Duration(hours: map['endZoneOffset'] as int)
-            : null,
+        endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
         energy: Energy.fromMap(Map<String, dynamic>.from(map['energy'])),
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));
   }

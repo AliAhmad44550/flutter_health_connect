@@ -2,6 +2,8 @@ import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/length.dart';
 
+import '../../flutter_health_connect.dart';
+
 class HeightRecord extends InstantaneousRecord {
   /// Unit: meters
   static const String aggregationKeyHeightAvg = 'HeightRecordHeightAvg';
@@ -26,16 +28,11 @@ class HeightRecord extends InstantaneousRecord {
     required this.height,
     metadata,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(height.inMeters >= _minHeight.inMeters &&
-            height.inMeters <= _maxHeight.inMeters);
+        assert(height.inMeters >= _minHeight.inMeters && height.inMeters <= _maxHeight.inMeters);
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is HeightRecord &&
-          time == other.time &&
-          zoneOffset == other.zoneOffset &&
-          height == other.height;
+      identical(this, other) || other is HeightRecord && time == other.time && zoneOffset == other.zoneOffset && height == other.height;
 
   @override
   int get hashCode => time.hashCode ^ zoneOffset.hashCode ^ height.hashCode;
@@ -57,9 +54,7 @@ class HeightRecord extends InstantaneousRecord {
   factory HeightRecord.fromMap(Map<String, dynamic> map) {
     return HeightRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       height: Length.fromMap(Map<String, dynamic>.from(map['height'])),
     );

@@ -1,10 +1,11 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 
+import '../../flutter_health_connect.dart';
+
 class WheelchairPushesRecord extends IntervalRecord {
   /// Unit: No unit
-  static const String aggregationKeyCountTotal =
-      'WheelchairPushesRecordCountTotal';
+  static const String aggregationKeyCountTotal = 'WheelchairPushesRecordCountTotal';
 
   @override
   DateTime endTime;
@@ -26,8 +27,7 @@ class WheelchairPushesRecord extends IntervalRecord {
     this.startZoneOffset,
     required this.count,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime."),
+        assert(startTime.isBefore(endTime), "startTime must not be after endTime."),
         assert(count >= _minCount && count <= _maxCount);
 
   @override
@@ -43,12 +43,7 @@ class WheelchairPushesRecord extends IntervalRecord {
 
   @override
   int get hashCode =>
-      endTime.hashCode ^
-      endZoneOffset.hashCode ^
-      metadata.hashCode ^
-      startTime.hashCode ^
-      startZoneOffset.hashCode ^
-      count.hashCode;
+      endTime.hashCode ^ endZoneOffset.hashCode ^ metadata.hashCode ^ startTime.hashCode ^ startZoneOffset.hashCode ^ count.hashCode;
 
   static const int _minCount = 1;
   static const int _maxCount = 1000000;
@@ -69,13 +64,9 @@ class WheelchairPushesRecord extends IntervalRecord {
   factory WheelchairPushesRecord.fromMap(Map<String, dynamic> map) {
     return WheelchairPushesRecord(
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
-          : null,
+      startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
-          : null,
+      endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
       count: map['count'] as int,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
     );

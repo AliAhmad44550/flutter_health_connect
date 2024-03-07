@@ -1,12 +1,12 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/units/energy.dart';
 
+import '../../flutter_health_connect.dart';
 import 'metadata/metadata.dart';
 
 class TotalCaloriesBurnedRecord extends IntervalRecord {
   /// Unit: kilocalories
-  static const String aggregationKeyEnergyTotal =
-      'TotalCaloriesBurnedRecordEnergyTotal';
+  static const String aggregationKeyEnergyTotal = 'TotalCaloriesBurnedRecordEnergyTotal';
 
   @override
   DateTime endTime;
@@ -28,10 +28,8 @@ class TotalCaloriesBurnedRecord extends IntervalRecord {
     required this.energy,
     metadata,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime."),
-        assert(energy.inKilocalories >=
-                _minTotalCaloriesBurned.inKilocalories &&
+        assert(startTime.isBefore(endTime), "startTime must not be after endTime."),
+        assert(energy.inKilocalories >= _minTotalCaloriesBurned.inKilocalories &&
             energy.inKilocalories <= _maxTotalCaloriesBurned.inKilocalories);
 
   @override
@@ -47,12 +45,7 @@ class TotalCaloriesBurnedRecord extends IntervalRecord {
 
   @override
   int get hashCode =>
-      endTime.hashCode ^
-      endZoneOffset.hashCode ^
-      startTime.hashCode ^
-      startZoneOffset.hashCode ^
-      metadata.hashCode ^
-      energy.hashCode;
+      endTime.hashCode ^ endZoneOffset.hashCode ^ startTime.hashCode ^ startZoneOffset.hashCode ^ metadata.hashCode ^ energy.hashCode;
 
   static const Energy _minTotalCaloriesBurned = Energy.kilocalories(0);
   static const Energy _maxTotalCaloriesBurned = Energy.kilocalories(1000000);
@@ -72,15 +65,11 @@ class TotalCaloriesBurnedRecord extends IntervalRecord {
   @override
   factory TotalCaloriesBurnedRecord.fromMap(Map<String, dynamic> map) {
     return TotalCaloriesBurnedRecord(
+      startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] == null
-          ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+      endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] == null
-          ? null
-          : Duration(hours: map['startZoneOffset'] as int),
       energy: Energy.fromMap(Map<String, dynamic>.from(map['energy'])),
     );
   } // f

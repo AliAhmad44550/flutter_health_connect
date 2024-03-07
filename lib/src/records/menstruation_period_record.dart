@@ -1,6 +1,8 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 
+import '../../flutter_health_connect.dart';
+
 class MenstruationPeriodRecord extends IntervalRecord {
   @override
   DateTime endTime;
@@ -20,10 +22,8 @@ class MenstruationPeriodRecord extends IntervalRecord {
     required this.startTime,
     this.startZoneOffset,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime."),
-        assert(endTime.difference(startTime) <= maxDuration,
-            "Period must not exceed 31 days.");
+        assert(startTime.isBefore(endTime), "startTime must not be after endTime."),
+        assert(endTime.difference(startTime) <= maxDuration, "Period must not exceed 31 days.");
 
   @override
   bool operator ==(Object other) =>
@@ -36,12 +36,7 @@ class MenstruationPeriodRecord extends IntervalRecord {
           startZoneOffset == other.startZoneOffset;
 
   @override
-  int get hashCode =>
-      endTime.hashCode ^
-      endZoneOffset.hashCode ^
-      metadata.hashCode ^
-      startTime.hashCode ^
-      startZoneOffset.hashCode;
+  int get hashCode => endTime.hashCode ^ endZoneOffset.hashCode ^ metadata.hashCode ^ startTime.hashCode ^ startZoneOffset.hashCode;
 
   static const maxDuration = Duration(days: 31);
 
@@ -59,15 +54,11 @@ class MenstruationPeriodRecord extends IntervalRecord {
   @override
   factory MenstruationPeriodRecord.fromMap(Map<String, dynamic> map) {
     return MenstruationPeriodRecord(
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
-          : null,
+      startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
+      endTime: DateTime.parse(map['endTime']),
+      endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
       metadata: Metadata.fromMap(map['metadata']),
       startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
-          : null,
     );
   }
 }

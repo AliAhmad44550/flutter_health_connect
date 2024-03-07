@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 
+import '../../flutter_health_connect.dart';
 import 'metadata/metadata.dart';
 
 class StepsRecord extends IntervalRecord {
@@ -26,8 +27,7 @@ class StepsRecord extends IntervalRecord {
     metadata,
     required this.count,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime."),
+        assert(startTime.isBefore(endTime), "startTime must not be after endTime."),
         assert(count >= _minSteps && count <= _maxSteps);
 
   @override
@@ -43,12 +43,7 @@ class StepsRecord extends IntervalRecord {
 
   @override
   int get hashCode =>
-      endTime.hashCode ^
-      endZoneOffset.hashCode ^
-      startTime.hashCode ^
-      startZoneOffset.hashCode ^
-      metadata.hashCode ^
-      count.hashCode;
+      endTime.hashCode ^ endZoneOffset.hashCode ^ startTime.hashCode ^ startZoneOffset.hashCode ^ metadata.hashCode ^ count.hashCode;
 
   static const int _minSteps = 1;
   static const int _maxSteps = 1000000;
@@ -69,13 +64,9 @@ class StepsRecord extends IntervalRecord {
   factory StepsRecord.fromMap(Map<String, dynamic> map) {
     return StepsRecord(
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
-          : null,
+      startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
-          : null,
+      endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       count: map['count'] as int,
     );

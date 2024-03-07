@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 
+import '../../flutter_health_connect.dart';
 import 'metadata/metadata.dart';
 
 class CervicalMucusRecord extends InstantaneousRecord {
@@ -22,10 +23,7 @@ class CervicalMucusRecord extends InstantaneousRecord {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CervicalMucusRecord &&
-          time == other.time &&
-          zoneOffset == other.zoneOffset;
+      identical(this, other) || other is CervicalMucusRecord && time == other.time && zoneOffset == other.zoneOffset;
 
   @override
   int get hashCode => time.hashCode ^ zoneOffset.hashCode;
@@ -45,16 +43,12 @@ class CervicalMucusRecord extends InstantaneousRecord {
   factory CervicalMucusRecord.fromMap(Map<String, dynamic> map) {
     return CervicalMucusRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-      sensation: (map['sensation'] != null &&
-              map['sensation'] as int < Sensation.values.length)
+      sensation: (map['sensation'] != null && map['sensation'] as int < Sensation.values.length)
           ? Sensation.values[map['sensation'] as int]
           : Sensation.unknown,
-      appearance: (map['appearance'] != null &&
-              map['appearance'] as int < Appearance.values.length)
+      appearance: (map['appearance'] != null && map['appearance'] as int < Appearance.values.length)
           ? Appearance.values[map['appearance'] as int]
           : Appearance.unknown,
     );

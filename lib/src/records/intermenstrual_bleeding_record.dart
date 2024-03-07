@@ -1,6 +1,8 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 
+import '../../flutter_health_connect.dart';
+
 class IntermenstrualBleedingRecord extends InstantaneousRecord {
   @override
   DateTime time;
@@ -18,10 +20,7 @@ class IntermenstrualBleedingRecord extends InstantaneousRecord {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is IntermenstrualBleedingRecord &&
-          time == other.time &&
-          zoneOffset == other.zoneOffset &&
-          metadata == other.metadata;
+      other is IntermenstrualBleedingRecord && time == other.time && zoneOffset == other.zoneOffset && metadata == other.metadata;
 
   @override
   int get hashCode => time.hashCode ^ zoneOffset.hashCode ^ metadata.hashCode;
@@ -39,9 +38,7 @@ class IntermenstrualBleedingRecord extends InstantaneousRecord {
   factory IntermenstrualBleedingRecord.fromMap(Map<String, dynamic> map) {
     return IntermenstrualBleedingRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
     );
   }

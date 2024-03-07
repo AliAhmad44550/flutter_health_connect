@@ -58,15 +58,15 @@ class _MyAppState extends State<MyApp> {
   // ];
 
   List<HealthConnectDataType> types = [
-    // HealthConnectDataType.Steps,
+    HealthConnectDataType.Steps,
     HealthConnectDataType.BodyFat,
-    // HealthConnectDataType.Weight,
-    // HealthConnectDataType.ActiveCaloriesBurned,
+    HealthConnectDataType.Weight,
+    HealthConnectDataType.ActiveCaloriesBurned,
     HealthConnectDataType.HeartRateVariabilityRmssd,
-    // HealthConnectDataType.RestingHeartRate,
-    // HealthConnectDataType.Distance,
-    // HealthConnectDataType.SleepSession,
-    // HealthConnectDataType.Nutrition,
+    HealthConnectDataType.RestingHeartRate,
+    HealthConnectDataType.Distance,
+    HealthConnectDataType.SleepSession,
+    HealthConnectDataType.Nutrition,
   ];
 
   bool readOnly = true;
@@ -128,7 +128,8 @@ class _MyAppState extends State<MyApp> {
               onPressed: () async {
                 var result = await HealthConnectFactory.hasPermissions(
                   types,
-                  readOnly: readOnly,
+                  readOnly: false,
+                  // readOnly: readOnly,
                 );
                 resultText = 'hasPermissions: $result';
                 _updateResultText();
@@ -164,7 +165,7 @@ class _MyAppState extends State<MyApp> {
                 try {
                   var result = await HealthConnectFactory.requestPermissions(
                     types,
-                    readOnly: readOnly,
+                    // readOnly: readOnly,
                   );
                   resultText = 'requestPermissions: $result';
                 } catch (e) {
@@ -213,17 +214,17 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () async {
-                var startTime = DateTime.now().subtract(const Duration(days: 3));
-                var endTime = DateTime.now().subtract(const Duration(days: 2));
+                var startTime = DateTime.now().subtract(const Duration(days: 6));
+                var endTime = DateTime.now().subtract(const Duration(days: 5));
                 var endTime1 = DateTime.now();
                 ActiveCaloriesBurnedRecord stepsRecord = ActiveCaloriesBurnedRecord(
                   startTime: startTime,
                   endTime: endTime,
-                  energy: Energy(15, EnergyUnit.calories),
+                  energy: const Energy(12.23, EnergyUnit.calories),
                 );
                 RestingHeartRateRecord exerciseSessionRecord = RestingHeartRateRecord(
                   time: startTime,
-                  beatsPerMinute: 82,
+                  beatsPerMinute: 77,
                 );
                 HeartRateVariabilityRmssdRecord hRecord = HeartRateVariabilityRmssdRecord(
                   time: startTime,
@@ -231,13 +232,16 @@ class _MyAppState extends State<MyApp> {
                 );
                 WeightRecord wRecord = WeightRecord(
                   time: startTime,
-                  weight: Mass(143, MassUnit.pounds),
+                  weight: const Mass(172.3, MassUnit.pounds),
                 );
-                NutritionRecord nRecord =
-                    NutritionRecord(startTime: startTime, endTime: endTime, energy: Energy(13.3, EnergyUnit.calories));
+                NutritionRecord nRecord = NutritionRecord(
+                  startTime: startTime,
+                  endTime: endTime,
+                  energy: const Energy(11.21, EnergyUnit.calories),
+                );
                 BodyFatRecord bRecord = BodyFatRecord(
                   time: startTime,
-                  percentage: Percentage(26.7),
+                  percentage: const Percentage(33.7),
                 );
                 try {
                   final requests = <Future>[];

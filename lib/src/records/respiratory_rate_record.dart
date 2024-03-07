@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 
+import '../../flutter_health_connect.dart';
 import 'metadata/metadata.dart';
 
 class RespiratoryRateRecord extends InstantaneousRecord {
@@ -29,8 +30,7 @@ class RespiratoryRateRecord extends InstantaneousRecord {
           metadata == other.metadata;
 
   @override
-  int get hashCode =>
-      time.hashCode ^ zoneOffset.hashCode ^ rate.hashCode ^ metadata.hashCode;
+  int get hashCode => time.hashCode ^ zoneOffset.hashCode ^ rate.hashCode ^ metadata.hashCode;
 
   @override
   Map<String, dynamic> toMap() {
@@ -46,9 +46,7 @@ class RespiratoryRateRecord extends InstantaneousRecord {
   factory RespiratoryRateRecord.fromMap(Map<String, dynamic> map) {
     return RespiratoryRateRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       rate: map['rate'] as double,
     );

@@ -1,18 +1,17 @@
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/records/series_record.dart';
 
+import '../../flutter_health_connect.dart';
+
 class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
   /// Unit: Revolutions per minute (RPM)
-  static const String aggregationKeyRpmAvg =
-      'CyclingPedalingCadenceRecordRpmAvg';
+  static const String aggregationKeyRpmAvg = 'CyclingPedalingCadenceRecordRpmAvg';
 
   /// Unit: Revolutions per minute (RPM)
-  static const String aggregationKeyRpmMin =
-      'CyclingPedalingCadenceRecordRpmMin';
+  static const String aggregationKeyRpmMin = 'CyclingPedalingCadenceRecordRpmMin';
 
   /// Unit: Revolutions per minute (RPM)
-  static const String aggregationKeyRpmMax =
-      'CyclingPedalingCadenceRecordRpmMax';
+  static const String aggregationKeyRpmMax = 'CyclingPedalingCadenceRecordRpmMax';
 
   @override
   DateTime endTime;
@@ -35,8 +34,7 @@ class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
     this.startZoneOffset,
     required this.samples,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime.");
+        assert(startTime.isBefore(endTime), "startTime must not be after endTime.");
 
   @override
   bool operator ==(Object other) =>
@@ -51,12 +49,7 @@ class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
 
   @override
   int get hashCode =>
-      endTime.hashCode ^
-      endZoneOffset.hashCode ^
-      metadata.hashCode ^
-      startTime.hashCode ^
-      startZoneOffset.hashCode ^
-      samples.hashCode;
+      endTime.hashCode ^ endZoneOffset.hashCode ^ metadata.hashCode ^ startTime.hashCode ^ startZoneOffset.hashCode ^ samples.hashCode;
 
   @override
   Map<String, dynamic> toMap() {
@@ -74,15 +67,10 @@ class CyclingPedalingCadenceRecord extends SeriesRecord<Sample> {
   factory CyclingPedalingCadenceRecord.fromMap(Map<String, dynamic> map) {
     return CyclingPedalingCadenceRecord(
         startTime: DateTime.parse(map['startTime']),
-        startZoneOffset: map['startZoneOffset'] != null
-            ? Duration(hours: map['startZoneOffset'] as int)
-            : null,
+        startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
         endTime: DateTime.parse(map['endTime']),
-        endZoneOffset: map['endZoneOffset'] != null
-            ? Duration(hours: map['endZoneOffset'] as int)
-            : null,
-        samples:
-            List<Sample>.from(map['samples']?.map((e) => Sample.fromMap(e))),
+        endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
+        samples: List<Sample>.from(map['samples']?.map((e) => Sample.fromMap(e))),
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])));
   }
 
@@ -97,13 +85,10 @@ class Sample {
 
   Sample({
     required this.revolutionsPerMinute,
-  }) : assert(revolutionsPerMinute >= _minRevolutionsPerMinute &&
-            revolutionsPerMinute <= _maxRevolutionsPerMinute);
+  }) : assert(revolutionsPerMinute >= _minRevolutionsPerMinute && revolutionsPerMinute <= _maxRevolutionsPerMinute);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Sample && revolutionsPerMinute == other.revolutionsPerMinute;
+  bool operator ==(Object other) => identical(this, other) || other is Sample && revolutionsPerMinute == other.revolutionsPerMinute;
 
   @override
   int get hashCode => revolutionsPerMinute.hashCode;

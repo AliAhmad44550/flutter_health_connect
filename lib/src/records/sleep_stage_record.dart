@@ -2,6 +2,8 @@ import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/records/sleep_session_record.dart';
 
+import '../../flutter_health_connect.dart';
+
 class SleepStageRecord extends IntervalRecord {
   @override
   DateTime endTime;
@@ -23,8 +25,7 @@ class SleepStageRecord extends IntervalRecord {
     this.startZoneOffset,
     required this.stage,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime.");
+        assert(startTime.isBefore(endTime), "startTime must not be after endTime.");
 
   @override
   bool operator ==(Object other) =>
@@ -39,12 +40,7 @@ class SleepStageRecord extends IntervalRecord {
 
   @override
   int get hashCode =>
-      endTime.hashCode ^
-      endZoneOffset.hashCode ^
-      metadata.hashCode ^
-      startTime.hashCode ^
-      startZoneOffset.hashCode ^
-      stage.hashCode;
+      endTime.hashCode ^ endZoneOffset.hashCode ^ metadata.hashCode ^ startTime.hashCode ^ startZoneOffset.hashCode ^ stage.hashCode;
 
   @override
   Map<String, dynamic> toMap() {
@@ -61,17 +57,12 @@ class SleepStageRecord extends IntervalRecord {
   @override
   factory SleepStageRecord.fromMap(Map<String, dynamic> map) {
     return SleepStageRecord(
-        endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
-        endZoneOffset: map['endZoneOffset'] != null
-            ? Duration(hours: map['endZoneOffset'])
-            : null,
+        startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
+        endTime: DateTime.parse(map['endTime']),
+        endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
         metadata: Metadata.fromMap(map['metadata']),
         startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
-        startZoneOffset: map['startZoneOffset'] != null
-            ? Duration(hours: map['startZoneOffset'])
-            : null,
-        stage: (map['stage'] != null &&
-                map['stage'] as int < SleepStageType.values.length)
+        stage: (map['stage'] != null && map['stage'] as int < SleepStageType.values.length)
             ? SleepStageType.values[map['stage']]
             : SleepStageType.unknown);
   }

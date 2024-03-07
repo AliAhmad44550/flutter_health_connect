@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 
+import '../../flutter_health_connect.dart';
 import 'exercise_lap.dart';
 import 'exercise_route.dart';
 import 'exercise_segment.dart';
@@ -7,8 +8,7 @@ import 'metadata/metadata.dart';
 
 class ExerciseSessionRecord extends IntervalRecord {
   /// Unit: seconds
-  static const String aggregationKeyExerciseDurationTotal =
-      'ExerciseSessionRecordExerciseDurationTotal';
+  static const String aggregationKeyExerciseDurationTotal = 'ExerciseSessionRecordExerciseDurationTotal';
 
   @override
   DateTime endTime;
@@ -44,41 +44,29 @@ class ExerciseSessionRecord extends IntervalRecord {
         hasRoute = route != null {
     assert(startTime.isBefore(endTime), "startTime must not be after endTime.");
     if (segments.isNotEmpty) {
-      var sortedSegments = segments
-        ..sort((a, b) => a.startTime.compareTo(b.startTime));
+      var sortedSegments = segments..sort((a, b) => a.startTime.compareTo(b.startTime));
       for (int i = 0; i < sortedSegments.length - 1; i++) {
-        assert(
-            !sortedSegments[i].endTime.isAfter(sortedSegments[i + 1].startTime),
-            "segments can not overlap.");
+        assert(!sortedSegments[i].endTime.isAfter(sortedSegments[i + 1].startTime), "segments can not overlap.");
       }
       // check all segments are within parent session duration
-      assert(!sortedSegments.first.startTime.isBefore(startTime),
-          "segments can not be out of parent time range.");
-      assert(!sortedSegments.last.endTime.isAfter(endTime),
-          "segments can not be out of parent time range.");
+      assert(!sortedSegments.first.startTime.isBefore(startTime), "segments can not be out of parent time range.");
+      assert(!sortedSegments.last.endTime.isAfter(endTime), "segments can not be out of parent time range.");
       for (var segment in sortedSegments) {
-        assert(segment.isCompatibleWith(exerciseType),
-            "segmentType and sessionType is not compatible.");
+        assert(segment.isCompatibleWith(exerciseType), "segmentType and sessionType is not compatible.");
       }
     }
     if (laps.isNotEmpty) {
-      var sortedLaps = laps.toList()
-        ..sort((a, b) => a.startTime.compareTo(b.startTime));
+      var sortedLaps = laps.toList()..sort((a, b) => a.startTime.compareTo(b.startTime));
       for (int i = 0; i < sortedLaps.length - 1; i++) {
-        assert(!sortedLaps[i].endTime.isAfter(sortedLaps[i + 1].startTime),
-            "laps can not overlap.");
+        assert(!sortedLaps[i].endTime.isAfter(sortedLaps[i + 1].startTime), "laps can not overlap.");
       }
       // check all laps are within parent session duration
-      assert(!sortedLaps.first.startTime.isBefore(startTime),
-          "laps can not be out of parent time range.");
-      assert(!sortedLaps.last.endTime.isAfter(endTime),
-          "laps can not be out of parent time range.");
+      assert(!sortedLaps.first.startTime.isBefore(startTime), "laps can not be out of parent time range.");
+      assert(!sortedLaps.last.endTime.isAfter(endTime), "laps can not be out of parent time range.");
     }
-    assert(route == null || hasRoute,
-        "hasRoute must be true if the route is not null");
+    assert(route == null || hasRoute, "hasRoute must be true if the route is not null");
     if (route != null) {
-      assert(route!.isWithin(startTime, endTime),
-          "route can not be out of parent time range.");
+      assert(route!.isWithin(startTime, endTime), "route can not be out of parent time range.");
     }
   }
 
@@ -92,11 +80,7 @@ class ExerciseSessionRecord extends IntervalRecord {
           startZoneOffset == other.startZoneOffset;
 
   @override
-  int get hashCode =>
-      endTime.hashCode ^
-      endZoneOffset.hashCode ^
-      startTime.hashCode ^
-      startZoneOffset.hashCode;
+  int get hashCode => endTime.hashCode ^ endZoneOffset.hashCode ^ startTime.hashCode ^ startZoneOffset.hashCode;
 
   @override
   Map<String, dynamic> toMap() {
@@ -120,21 +104,15 @@ class ExerciseSessionRecord extends IntervalRecord {
   factory ExerciseSessionRecord.fromMap(Map<String, dynamic> map) {
     return ExerciseSessionRecord(
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
-          : null,
+      startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
-          : null,
+      endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       exerciseType: ExerciseType.fromValue(map['exerciseType']),
       title: map['title'],
       notes: map['notes'],
-      segments: List<ExerciseSegment>.from(
-          map['segments']?.map((x) => ExerciseSegment.fromMap(x))),
-      laps: List<ExerciseLap>.from(
-          map['laps']?.map((x) => ExerciseLap.fromMap(x))),
+      segments: List<ExerciseSegment>.from(map['segments']?.map((x) => ExerciseSegment.fromMap(x))),
+      laps: List<ExerciseLap>.from(map['laps']?.map((x) => ExerciseLap.fromMap(x))),
       route: map['route'] != null ? ExerciseRoute.fromMap(map['route']) : null,
     );
   }
@@ -213,8 +191,7 @@ enum ExerciseType {
   const ExerciseType(this.value);
 
   factory ExerciseType.fromValue(int value) {
-    return values.firstWhere((e) => e.value == value,
-        orElse: () => otherWorkout);
+    return values.firstWhere((e) => e.value == value, orElse: () => otherWorkout);
   }
 
   @override

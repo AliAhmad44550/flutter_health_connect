@@ -1,6 +1,7 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/units/percentage.dart';
 
+import '../../flutter_health_connect.dart';
 import 'metadata/metadata.dart';
 
 class BodyFatRecord extends InstantaneousRecord {
@@ -17,17 +18,13 @@ class BodyFatRecord extends InstantaneousRecord {
     this.zoneOffset,
     required this.percentage,
     metadata,
-  })  : assert(percentage.value >= _minBodyFatPercentage &&
-            percentage.value <= _maxBodyFatPercentage),
+  })  : assert(percentage.value >= _minBodyFatPercentage && percentage.value <= _maxBodyFatPercentage),
         metadata = metadata ?? Metadata.empty();
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BodyFatRecord &&
-          time == other.time &&
-          zoneOffset == other.zoneOffset &&
-          percentage == other.percentage;
+      other is BodyFatRecord && time == other.time && zoneOffset == other.zoneOffset && percentage == other.percentage;
 
   @override
   int get hashCode => time.hashCode ^ zoneOffset.hashCode ^ percentage.hashCode;
@@ -49,12 +46,9 @@ class BodyFatRecord extends InstantaneousRecord {
   factory BodyFatRecord.fromMap(Map<String, dynamic> map) {
     return BodyFatRecord(
         time: DateTime.parse(map['time']),
-        zoneOffset: map['zoneOffset'] != null
-            ? Duration(hours: map['zoneOffset'] as int)
-            : null,
+        zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-        percentage:
-            Percentage.fromMap(Map<String, dynamic>.from(map['percentage'])));
+        percentage: Percentage.fromMap(Map<String, dynamic>.from(map['percentage'])));
   }
 
   @override

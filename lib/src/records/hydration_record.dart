@@ -2,6 +2,8 @@ import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/volume.dart';
 
+import '../../flutter_health_connect.dart';
+
 class HydrationRecord extends IntervalRecord {
   /// Unit: liters
   static const String aggregationKeyVolumeTotal = 'HydrationRecordVolumeTotal';
@@ -26,10 +28,8 @@ class HydrationRecord extends IntervalRecord {
     this.startZoneOffset,
     required this.volume,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime."),
-        assert(volume.inLiters >= _minVolume.inLiters &&
-            volume.inLiters <= _maxVolume.inLiters);
+        assert(startTime.isBefore(endTime), "startTime must not be after endTime."),
+        assert(volume.inLiters >= _minVolume.inLiters && volume.inLiters <= _maxVolume.inLiters);
 
   @override
   bool operator ==(Object other) =>
@@ -44,12 +44,7 @@ class HydrationRecord extends IntervalRecord {
 
   @override
   int get hashCode =>
-      endTime.hashCode ^
-      endZoneOffset.hashCode ^
-      metadata.hashCode ^
-      startTime.hashCode ^
-      startZoneOffset.hashCode ^
-      volume.hashCode;
+      endTime.hashCode ^ endZoneOffset.hashCode ^ metadata.hashCode ^ startTime.hashCode ^ startZoneOffset.hashCode ^ volume.hashCode;
 
   static const Volume _minVolume = Volume.liters(0);
   static const Volume _maxVolume = Volume.liters(100);
@@ -69,15 +64,11 @@ class HydrationRecord extends IntervalRecord {
   @override
   factory HydrationRecord.fromMap(Map<String, dynamic> map) {
     return HydrationRecord(
+      startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
-          : null,
+      endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
-          : null,
       volume: Volume.fromMap(Map<String, dynamic>.from(map['volume'])),
     );
   }

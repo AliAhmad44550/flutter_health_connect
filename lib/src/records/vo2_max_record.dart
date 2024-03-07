@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 
+import '../../flutter_health_connect.dart';
 import 'metadata/metadata.dart';
 
 class Vo2MaxRecord extends InstantaneousRecord {
@@ -19,8 +20,7 @@ class Vo2MaxRecord extends InstantaneousRecord {
     this.measurementMethod = Vo2MaxMeasurementMethod.other,
     metadata,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(vo2MillilitersPerMinuteKilogram >= 0 &&
-            vo2MillilitersPerMinuteKilogram <= 100);
+        assert(vo2MillilitersPerMinuteKilogram >= 0 && vo2MillilitersPerMinuteKilogram <= 100);
 
   @override
   bool operator ==(Object other) =>
@@ -28,18 +28,13 @@ class Vo2MaxRecord extends InstantaneousRecord {
       other is Vo2MaxRecord &&
           time == other.time &&
           zoneOffset == other.zoneOffset &&
-          vo2MillilitersPerMinuteKilogram ==
-              other.vo2MillilitersPerMinuteKilogram &&
+          vo2MillilitersPerMinuteKilogram == other.vo2MillilitersPerMinuteKilogram &&
           measurementMethod == other.measurementMethod &&
           metadata == other.metadata;
 
   @override
   int get hashCode =>
-      time.hashCode ^
-      zoneOffset.hashCode ^
-      vo2MillilitersPerMinuteKilogram.hashCode ^
-      measurementMethod.hashCode ^
-      metadata.hashCode;
+      time.hashCode ^ zoneOffset.hashCode ^ vo2MillilitersPerMinuteKilogram.hashCode ^ measurementMethod.hashCode ^ metadata.hashCode;
 
   @override
   Map<String, dynamic> toMap() {
@@ -56,15 +51,10 @@ class Vo2MaxRecord extends InstantaneousRecord {
   factory Vo2MaxRecord.fromMap(Map<String, dynamic> map) {
     return Vo2MaxRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-      vo2MillilitersPerMinuteKilogram:
-          map['vo2MillilitersPerMinuteKilogram'] as double,
-      measurementMethod: (map['measurementMethod'] != null &&
-              map['measurementMethod'] as int <
-                  Vo2MaxMeasurementMethod.values.length)
+      vo2MillilitersPerMinuteKilogram: map['vo2MillilitersPerMinuteKilogram'] as double,
+      measurementMethod: (map['measurementMethod'] != null && map['measurementMethod'] as int < Vo2MaxMeasurementMethod.values.length)
           ? Vo2MaxMeasurementMethod.values[map['measurementMethod'] as int]
           : Vo2MaxMeasurementMethod.other,
     );

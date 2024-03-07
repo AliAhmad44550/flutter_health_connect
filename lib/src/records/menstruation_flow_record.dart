@@ -1,6 +1,8 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 
+import '../../flutter_health_connect.dart';
+
 class MenstruationFlowRecord extends InstantaneousRecord {
   @override
   Metadata metadata;
@@ -10,30 +12,20 @@ class MenstruationFlowRecord extends InstantaneousRecord {
   Duration? zoneOffset;
   Flow flow;
 
-  MenstruationFlowRecord(
-      {required this.time, this.zoneOffset, this.flow = Flow.unknown, metadata})
+  MenstruationFlowRecord({required this.time, this.zoneOffset, this.flow = Flow.unknown, metadata})
       : metadata = metadata ?? Metadata.empty();
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MenstruationFlowRecord &&
-          time == other.time &&
-          zoneOffset == other.zoneOffset &&
-          flow == other.flow;
+      other is MenstruationFlowRecord && time == other.time && zoneOffset == other.zoneOffset && flow == other.flow;
 
   @override
-  int get hashCode =>
-      metadata.hashCode ^ time.hashCode ^ zoneOffset.hashCode ^ flow.hashCode;
+  int get hashCode => metadata.hashCode ^ time.hashCode ^ zoneOffset.hashCode ^ flow.hashCode;
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      'metadata': metadata.toMap(),
-      'time': time.toUtc().toIso8601String(),
-      'zoneOffset': zoneOffset?.inHours,
-      'flow': flow.index
-    };
+    return {'metadata': metadata.toMap(), 'time': time.toUtc().toIso8601String(), 'zoneOffset': zoneOffset?.inHours, 'flow': flow.index};
   }
 
   @override
@@ -41,12 +33,8 @@ class MenstruationFlowRecord extends InstantaneousRecord {
     return MenstruationFlowRecord(
         metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
         time: DateTime.parse(map['time']),
-        zoneOffset: map['zoneOffset'] != null
-            ? Duration(hours: map['zoneOffset'] as int)
-            : null,
-        flow: (map['flow'] != null && map['flow'] as int < Flow.values.length)
-            ? Flow.values[map['flow'] as int]
-            : Flow.unknown);
+        zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
+        flow: (map['flow'] != null && map['flow'] as int < Flow.values.length) ? Flow.values[map['flow'] as int] : Flow.unknown);
   }
 }
 

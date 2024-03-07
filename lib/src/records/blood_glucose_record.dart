@@ -2,6 +2,7 @@ import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/meal_type.dart';
 import 'package:flutter_health_connect/src/units/blood_glucose.dart';
 
+import '../../flutter_health_connect.dart';
 import 'metadata/metadata.dart';
 
 class BloodGlucoseRecord extends InstantaneousRecord {
@@ -69,7 +70,7 @@ class BloodGlucoseRecord extends InstantaneousRecord {
     return BloodGlucoseRecord(
       time: DateTime.parse(map['time']),
       zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
+          ? parseTimeZoneOffset(map['zoneOffset'])
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       level: BloodGlucose.fromMap(Map<String, dynamic>.from(map['level'])),

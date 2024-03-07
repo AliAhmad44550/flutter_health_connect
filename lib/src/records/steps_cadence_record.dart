@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/series_record.dart';
 
+import '../../flutter_health_connect.dart';
 import 'metadata/metadata.dart';
 
 class StepsCadenceRecord extends SeriesRecord<StepsCadenceSample> {
@@ -33,8 +34,7 @@ class StepsCadenceRecord extends SeriesRecord<StepsCadenceSample> {
     required this.samples,
     metadata,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime.");
+        assert(startTime.isBefore(endTime), "startTime must not be after endTime.");
 
   @override
   bool operator ==(Object other) =>
@@ -49,12 +49,7 @@ class StepsCadenceRecord extends SeriesRecord<StepsCadenceSample> {
 
   @override
   int get hashCode =>
-      endTime.hashCode ^
-      endZoneOffset.hashCode ^
-      startTime.hashCode ^
-      startZoneOffset.hashCode ^
-      samples.hashCode ^
-      metadata.hashCode;
+      endTime.hashCode ^ endZoneOffset.hashCode ^ startTime.hashCode ^ startZoneOffset.hashCode ^ samples.hashCode ^ metadata.hashCode;
 
   @override
   Map<String, dynamic> toMap() {
@@ -71,18 +66,12 @@ class StepsCadenceRecord extends SeriesRecord<StepsCadenceSample> {
   @override
   factory StepsCadenceRecord.fromMap(Map<String, dynamic> map) {
     return StepsCadenceRecord(
+      startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] == null
-          ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+      endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] == null
-          ? null
-          : Duration(hours: map['startZoneOffset'] as int),
-      samples: (map['samples'] as List)
-          .map((e) => StepsCadenceSample.fromMap(e as Map<String, dynamic>))
-          .toList(),
+      samples: (map['samples'] as List).map((e) => StepsCadenceSample.fromMap(e as Map<String, dynamic>)).toList(),
     );
   }
 
@@ -102,9 +91,7 @@ class StepsCadenceSample {
   }) : assert(rate >= _minStepsPerMinute && rate <= _maxStepsPerMinute);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is StepsCadenceSample && rate == other.rate && time == other.time;
+  bool operator ==(Object other) => identical(this, other) || other is StepsCadenceSample && rate == other.rate && time == other.time;
 
   @override
   int get hashCode => rate.hashCode ^ time.hashCode;

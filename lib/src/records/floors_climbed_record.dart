@@ -1,10 +1,11 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 
+import '../../flutter_health_connect.dart';
+
 class FloorsClimbedRecord extends IntervalRecord {
   /// Unit: No unit
-  static const String aggregationKeyFloorsClimbedTotal =
-      'FloorsClimbedRecordFloorsClimbedTotal';
+  static const String aggregationKeyFloorsClimbedTotal = 'FloorsClimbedRecordFloorsClimbedTotal';
 
   @override
   DateTime endTime;
@@ -26,8 +27,7 @@ class FloorsClimbedRecord extends IntervalRecord {
     this.startZoneOffset,
     required this.floors,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime."),
+        assert(startTime.isBefore(endTime), "startTime must not be after endTime."),
         assert(floors >= _minFloors && floors <= _maxFloors);
 
   @override
@@ -43,12 +43,7 @@ class FloorsClimbedRecord extends IntervalRecord {
 
   @override
   int get hashCode =>
-      endTime.hashCode ^
-      endZoneOffset.hashCode ^
-      metadata.hashCode ^
-      startTime.hashCode ^
-      startZoneOffset.hashCode ^
-      floors.hashCode;
+      endTime.hashCode ^ endZoneOffset.hashCode ^ metadata.hashCode ^ startTime.hashCode ^ startZoneOffset.hashCode ^ floors.hashCode;
 
   static const double _minFloors = 0;
   static const double _maxFloors = 1000000.0;
@@ -69,14 +64,10 @@ class FloorsClimbedRecord extends IntervalRecord {
   factory FloorsClimbedRecord.fromMap(Map<String, dynamic> map) {
     return FloorsClimbedRecord(
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] == null
-          ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+      startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
+      endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] == null
-          ? null
-          : Duration(hours: map['startZoneOffset'] as int),
       floors: map['floors'] as double,
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter_health_connect/src/records/series_record.dart';
 import 'package:flutter_health_connect/src/units/velocity.dart';
 
+import '../../flutter_health_connect.dart';
 import 'metadata/metadata.dart';
 
 class SpeedRecord extends SeriesRecord<SpeedSample> {
@@ -34,8 +35,7 @@ class SpeedRecord extends SeriesRecord<SpeedSample> {
     required this.samples,
     metadata,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(startTime.isBefore(endTime),
-            "startTime must not be after endTime.");
+        assert(startTime.isBefore(endTime), "startTime must not be after endTime.");
 
   @override
   bool operator ==(Object other) =>
@@ -48,12 +48,7 @@ class SpeedRecord extends SeriesRecord<SpeedSample> {
           samples == other.samples;
 
   @override
-  int get hashCode =>
-      endTime.hashCode ^
-      endZoneOffset.hashCode ^
-      startTime.hashCode ^
-      startZoneOffset.hashCode ^
-      samples.hashCode;
+  int get hashCode => endTime.hashCode ^ endZoneOffset.hashCode ^ startTime.hashCode ^ startZoneOffset.hashCode ^ samples.hashCode;
 
   @override
   Map<String, dynamic> toMap() {
@@ -70,17 +65,11 @@ class SpeedRecord extends SeriesRecord<SpeedSample> {
   @override
   factory SpeedRecord.fromMap(Map<String, dynamic> map) {
     return SpeedRecord(
+      startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] == null
-          ? null
-          : Duration(hours: map['endZoneOffset'] as int),
+      endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] == null
-          ? null
-          : Duration(hours: map['startZoneOffset'] as int),
-      samples: (map['samples'] as List<dynamic>)
-          .map((e) => SpeedSample.fromMap(e as Map<String, dynamic>))
-          .toList(),
+      samples: (map['samples'] as List<dynamic>).map((e) => SpeedSample.fromMap(e as Map<String, dynamic>)).toList(),
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
     );
   }
@@ -98,13 +87,10 @@ class SpeedSample {
   SpeedSample({
     required this.speed,
     required this.time,
-  }) : assert(speed.inMetersPerSecond >= _minSpeed.inMetersPerSecond &&
-            speed.inMetersPerSecond <= _maxSpeed.inMetersPerSecond);
+  }) : assert(speed.inMetersPerSecond >= _minSpeed.inMetersPerSecond && speed.inMetersPerSecond <= _maxSpeed.inMetersPerSecond);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SpeedSample && speed == other.speed && time == other.time;
+  bool operator ==(Object other) => identical(this, other) || other is SpeedSample && speed == other.speed && time == other.time;
 
   @override
   int get hashCode => speed.hashCode ^ time.hashCode;

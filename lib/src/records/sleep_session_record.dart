@@ -1,11 +1,11 @@
 import 'package:flutter_health_connect/src/records/interval_record.dart';
 
+import '../../flutter_health_connect.dart';
 import 'metadata/metadata.dart';
 
 class SleepSessionRecord extends IntervalRecord {
   /// Unit: seconds
-  static const String aggregationKeySleepDurationTotal =
-      'SleepSessionRecordSleepDurationTotal';
+  static const String aggregationKeySleepDurationTotal = 'SleepSessionRecordSleepDurationTotal';
 
   @override
   DateTime startTime;
@@ -33,8 +33,7 @@ class SleepSessionRecord extends IntervalRecord {
   })  : metadata = metadata ?? Metadata.empty(),
         assert(startTime.isBefore(endTime)) {
     if (stages.isNotEmpty) {
-      List<SleepStage> sortedStages = stages
-        ..sort((a, b) => a.startTime.compareTo(b.startTime));
+      List<SleepStage> sortedStages = stages..sort((a, b) => a.startTime.compareTo(b.startTime));
       for (int i = 0; i < sortedStages.length - 1; i++) {
         assert(sortedStages[i].endTime.isAfter(sortedStages[i + 1].startTime));
       }
@@ -85,18 +84,13 @@ class SleepSessionRecord extends IntervalRecord {
   factory SleepSessionRecord.fromMap(Map<String, dynamic> map) {
     return SleepSessionRecord(
       startTime: DateTime.parse(map['startTime']),
-      startZoneOffset: map['startZoneOffset'] != null
-          ? Duration(hours: map['startZoneOffset'] as int)
-          : null,
+      startZoneOffset: map['startZoneOffset'] != null ? parseTimeZoneOffset(map['startZoneOffset']) : null,
       endTime: DateTime.parse(map['endTime']),
-      endZoneOffset: map['endZoneOffset'] != null
-          ? Duration(hours: map['endZoneOffset'] as int)
-          : null,
+      endZoneOffset: map['endZoneOffset'] != null ? parseTimeZoneOffset(map['endZoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       title: map['title'] as String?,
       notes: map['notes'] as String?,
-      stages:
-          (map['stages'] as List).map((e) => SleepStage.fromMap(e)).toList(),
+      stages: (map['stages'] as List).map((e) => SleepStage.fromMap(e)).toList(),
     );
   }
 
@@ -119,11 +113,7 @@ class SleepStage {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SleepStage &&
-          startTime == other.startTime &&
-          endTime == other.endTime &&
-          type == other.type;
+      identical(this, other) || other is SleepStage && startTime == other.startTime && endTime == other.endTime && type == other.type;
 
   @override
   int get hashCode => startTime.hashCode ^ endTime.hashCode ^ type.hashCode;
@@ -140,8 +130,7 @@ class SleepStage {
     return SleepStage(
       startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
       endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
-      type: (map['type'] != null &&
-              map['type'] as int < SleepStageType.values.length)
+      type: (map['type'] != null && map['type'] as int < SleepStageType.values.length)
           ? SleepStageType.values[map['type'] as int]
           : SleepStageType.unknown,
     );

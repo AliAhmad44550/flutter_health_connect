@@ -3,6 +3,8 @@ import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/temperature.dart';
 
+import '../../flutter_health_connect.dart';
+
 class BasalBodyTemperatureRecord extends InstantaneousRecord {
   @override
   Metadata metadata;
@@ -26,10 +28,7 @@ class BasalBodyTemperatureRecord extends InstantaneousRecord {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BasalBodyTemperatureRecord &&
-          metadata == other.metadata &&
-          time == other.time &&
-          zoneOffset == other.zoneOffset;
+      other is BasalBodyTemperatureRecord && metadata == other.metadata && time == other.time && zoneOffset == other.zoneOffset;
 
   @override
   int get hashCode => metadata.hashCode ^ time.hashCode ^ zoneOffset.hashCode;
@@ -52,18 +51,13 @@ class BasalBodyTemperatureRecord extends InstantaneousRecord {
   factory BasalBodyTemperatureRecord.fromMap(Map<String, dynamic> map) {
     return BasalBodyTemperatureRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-      temperature:
-          Temperature.fromMap(Map<String, dynamic>.from(map['temperature'])),
-      measurementLocation: (map['measurementLocation'] != null &&
-              map['measurementLocation'] as int <
-                  BodyTemperatureMeasurementLocation.values.length)
-          ? BodyTemperatureMeasurementLocation
-              .values[map['measurementLocation'] as int]
-          : BodyTemperatureMeasurementLocation.unknown,
+      temperature: Temperature.fromMap(Map<String, dynamic>.from(map['temperature'])),
+      measurementLocation:
+          (map['measurementLocation'] != null && map['measurementLocation'] as int < BodyTemperatureMeasurementLocation.values.length)
+              ? BodyTemperatureMeasurementLocation.values[map['measurementLocation'] as int]
+              : BodyTemperatureMeasurementLocation.unknown,
     );
   }
 

@@ -2,6 +2,8 @@ import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/percentage.dart';
 
+import '../../flutter_health_connect.dart';
+
 class OxygenSaturationRecord extends InstantaneousRecord {
   @override
   Metadata metadata;
@@ -47,7 +49,7 @@ class OxygenSaturationRecord extends InstantaneousRecord {
     return OxygenSaturationRecord(
       time: DateTime.parse(map['time']),
       zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
+          ? parseTimeZoneOffset(map['zoneOffset'])
           : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       percentage:

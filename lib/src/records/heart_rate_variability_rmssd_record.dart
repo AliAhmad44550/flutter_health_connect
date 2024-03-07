@@ -1,6 +1,8 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 
+import '../../flutter_health_connect.dart';
+
 class HeartRateVariabilityRmssdRecord extends InstantaneousRecord {
   @override
   Metadata metadata;
@@ -16,8 +18,8 @@ class HeartRateVariabilityRmssdRecord extends InstantaneousRecord {
     required this.heartRateVariabilityMillis,
     metadata,
   })  : metadata = metadata ?? Metadata.empty(),
-        assert(heartRateVariabilityMillis >= _minHeartRateVariabilityMillis &&
-            heartRateVariabilityMillis <= _maxHeartRateVariabilityMillis);
+        assert(
+            heartRateVariabilityMillis >= _minHeartRateVariabilityMillis && heartRateVariabilityMillis <= _maxHeartRateVariabilityMillis);
 
   @override
   bool operator ==(Object other) =>
@@ -28,8 +30,7 @@ class HeartRateVariabilityRmssdRecord extends InstantaneousRecord {
           heartRateVariabilityMillis == other.heartRateVariabilityMillis;
 
   @override
-  int get hashCode =>
-      time.hashCode ^ zoneOffset.hashCode ^ heartRateVariabilityMillis.hashCode;
+  int get hashCode => time.hashCode ^ zoneOffset.hashCode ^ heartRateVariabilityMillis.hashCode;
 
   static const double _minHeartRateVariabilityMillis = 1.0;
   static const double _maxHeartRateVariabilityMillis = 200.0;
@@ -48,9 +49,7 @@ class HeartRateVariabilityRmssdRecord extends InstantaneousRecord {
   factory HeartRateVariabilityRmssdRecord.fromMap(Map<String, dynamic> map) {
     return HeartRateVariabilityRmssdRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       heartRateVariabilityMillis: map['heartRateVariabilityMillis'] as double,
     );

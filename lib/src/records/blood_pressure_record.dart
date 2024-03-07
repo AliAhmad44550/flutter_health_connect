@@ -2,30 +2,26 @@ import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/pressure.dart';
 
+import '../../flutter_health_connect.dart';
+
 class BloodPressureRecord extends InstantaneousRecord {
   /// Unit: millimeters of mercury
-  static const String aggregationKeySystolicAvg =
-      'BloodPressureRecordSystolicAvg';
+  static const String aggregationKeySystolicAvg = 'BloodPressureRecordSystolicAvg';
 
   /// Unit: millimeters of mercury
-  static const String aggregationKeySystolicMin =
-      'BloodPressureRecordSystolicMin';
+  static const String aggregationKeySystolicMin = 'BloodPressureRecordSystolicMin';
 
   /// Unit: millimeters of mercury
-  static const String aggregationKeySystolicMax =
-      'BloodPressureRecordSystolicMax';
+  static const String aggregationKeySystolicMax = 'BloodPressureRecordSystolicMax';
 
   /// Unit: millimeters of mercury
-  static const String aggregationKeyDiastolicAvg =
-      'BloodPressureRecordDiastolicAvg';
+  static const String aggregationKeyDiastolicAvg = 'BloodPressureRecordDiastolicAvg';
 
   /// Unit: millimeters of mercury
-  static const String aggregationKeyDiastolicMin =
-      'BloodPressureRecordDiastolicMin';
+  static const String aggregationKeyDiastolicMin = 'BloodPressureRecordDiastolicMin';
 
   /// Unit: millimeters of mercury
-  static const String aggregationKeyDiastolicMax =
-      'BloodPressureRecordDiastolicMax';
+  static const String aggregationKeyDiastolicMax = 'BloodPressureRecordDiastolicMax';
 
   @override
   Metadata metadata;
@@ -47,14 +43,10 @@ class BloodPressureRecord extends InstantaneousRecord {
     required this.diastolic,
     this.measurementLocation = BloodPressureMeasurementLocation.unknown,
     this.bodyPosition = BloodPressureBodyPosition.unknown,
-  })  : assert(systolic.inMillimetersOfMercury >=
-                _minSystolic.inMillimetersOfMercury &&
-            systolic.inMillimetersOfMercury <=
-                _maxSystolic.inMillimetersOfMercury),
-        assert(diastolic.inMillimetersOfMercury >=
-                _minDiastolic.inMillimetersOfMercury &&
-            diastolic.inMillimetersOfMercury <=
-                _maxDiastolic.inMillimetersOfMercury),
+  })  : assert(systolic.inMillimetersOfMercury >= _minSystolic.inMillimetersOfMercury &&
+            systolic.inMillimetersOfMercury <= _maxSystolic.inMillimetersOfMercury),
+        assert(diastolic.inMillimetersOfMercury >= _minDiastolic.inMillimetersOfMercury &&
+            diastolic.inMillimetersOfMercury <= _maxDiastolic.inMillimetersOfMercury),
         metadata = metadata ?? Metadata.empty();
 
   @override
@@ -102,20 +94,14 @@ class BloodPressureRecord extends InstantaneousRecord {
     return BloodPressureRecord(
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
       systolic: Pressure.fromMap(Map<String, dynamic>.from(map['systolic'])),
       diastolic: Pressure.fromMap(Map<String, dynamic>.from(map['diastolic'])),
-      measurementLocation: (map['measurementLocation'] != null &&
-              map['measurementLocation'] as int <
-                  BloodPressureMeasurementLocation.values.length)
-          ? BloodPressureMeasurementLocation
-              .values[map['measurementLocation'] as int]
-          : BloodPressureMeasurementLocation.unknown,
-      bodyPosition: (map['bodyPosition'] != null &&
-              map['bodyPosition'] as int <
-                  BloodPressureBodyPosition.values.length)
+      measurementLocation:
+          (map['measurementLocation'] != null && map['measurementLocation'] as int < BloodPressureMeasurementLocation.values.length)
+              ? BloodPressureMeasurementLocation.values[map['measurementLocation'] as int]
+              : BloodPressureMeasurementLocation.unknown,
+      bodyPosition: (map['bodyPosition'] != null && map['bodyPosition'] as int < BloodPressureBodyPosition.values.length)
           ? BloodPressureBodyPosition.values[map['bodyPosition'] as int]
           : BloodPressureBodyPosition.unknown,
     );

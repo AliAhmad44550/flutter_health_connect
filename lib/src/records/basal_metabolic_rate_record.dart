@@ -1,12 +1,12 @@
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 import 'package:flutter_health_connect/src/units/power.dart';
 
+import '../../flutter_health_connect.dart';
 import 'instantaneous_record.dart';
 
 class BasalMetabolicRateRecord extends InstantaneousRecord {
   /// Unit: kilocalories
-  static const String aggregationKeyBasalCaloriesTotal =
-      'BasalMetabolicRateRecordBasalCaloriesTotal';
+  static const String aggregationKeyBasalCaloriesTotal = 'BasalMetabolicRateRecordBasalCaloriesTotal';
 
   final Power basalMetabolicRate;
   @override
@@ -16,11 +16,7 @@ class BasalMetabolicRateRecord extends InstantaneousRecord {
   @override
   Duration? zoneOffset;
 
-  BasalMetabolicRateRecord(
-      {required this.time,
-      this.zoneOffset,
-      metadata,
-      required this.basalMetabolicRate})
+  BasalMetabolicRateRecord({required this.time, this.zoneOffset, metadata, required this.basalMetabolicRate})
       : assert(basalMetabolicRate.value <= _maxBasalMetabolicRate.value),
         assert(basalMetabolicRate.value >= _minBasalMetabolicRate.value),
         metadata = metadata ?? Metadata.empty();
@@ -38,11 +34,7 @@ class BasalMetabolicRateRecord extends InstantaneousRecord {
           zoneOffset == other.zoneOffset;
 
   @override
-  int get hashCode =>
-      basalMetabolicRate.hashCode ^
-      metadata.hashCode ^
-      time.hashCode ^
-      zoneOffset.hashCode;
+  int get hashCode => basalMetabolicRate.hashCode ^ metadata.hashCode ^ time.hashCode ^ zoneOffset.hashCode;
 
   @override
   Map<String, dynamic> toMap() {
@@ -58,12 +50,9 @@ class BasalMetabolicRateRecord extends InstantaneousRecord {
   factory BasalMetabolicRateRecord.fromMap(Map<String, dynamic> map) {
     return BasalMetabolicRateRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-      basalMetabolicRate:
-          Power.fromMap(Map<String, dynamic>.from(map['basalMetabolicRate'])),
+      basalMetabolicRate: Power.fromMap(Map<String, dynamic>.from(map['basalMetabolicRate'])),
     );
   }
 

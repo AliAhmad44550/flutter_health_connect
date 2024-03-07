@@ -1,6 +1,8 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 import 'package:flutter_health_connect/src/records/metadata/metadata.dart';
 
+import '../../flutter_health_connect.dart';
+
 class RestingHeartRateRecord extends InstantaneousRecord {
   /// Unit: Beats per minute (BPM)
   static const String aggregationKeyBpmAvg = 'RestingHeartRateRecordBpmAvg';
@@ -30,14 +32,10 @@ class RestingHeartRateRecord extends InstantaneousRecord {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is RestingHeartRateRecord &&
-          time == other.time &&
-          zoneOffset == other.zoneOffset &&
-          beatsPerMinute == other.beatsPerMinute;
+      other is RestingHeartRateRecord && time == other.time && zoneOffset == other.zoneOffset && beatsPerMinute == other.beatsPerMinute;
 
   @override
-  int get hashCode =>
-      time.hashCode ^ zoneOffset.hashCode ^ beatsPerMinute.hashCode;
+  int get hashCode => time.hashCode ^ zoneOffset.hashCode ^ beatsPerMinute.hashCode;
 
   @override
   Map<String, dynamic> toMap() {
@@ -53,9 +51,7 @@ class RestingHeartRateRecord extends InstantaneousRecord {
   factory RestingHeartRateRecord.fromMap(Map<String, dynamic> map) {
     return RestingHeartRateRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
       beatsPerMinute: map['beatsPerMinute'] as int,
     );

@@ -1,5 +1,6 @@
 import 'package:flutter_health_connect/src/records/instantaneous_record.dart';
 
+import '../../flutter_health_connect.dart';
 import 'metadata/metadata.dart';
 
 class OvulationTestRecord extends InstantaneousRecord {
@@ -11,9 +12,7 @@ class OvulationTestRecord extends InstantaneousRecord {
   Metadata metadata;
   OvulationTestResult result;
 
-  OvulationTestRecord(
-      {required this.time, this.zoneOffset, required this.result, metadata})
-      : metadata = metadata ?? Metadata.empty();
+  OvulationTestRecord({required this.time, this.zoneOffset, required this.result, metadata}) : metadata = metadata ?? Metadata.empty();
 
   @override
   bool operator ==(Object other) =>
@@ -25,8 +24,7 @@ class OvulationTestRecord extends InstantaneousRecord {
           result == other.result;
 
   @override
-  int get hashCode =>
-      time.hashCode ^ zoneOffset.hashCode ^ metadata.hashCode ^ result.hashCode;
+  int get hashCode => time.hashCode ^ zoneOffset.hashCode ^ metadata.hashCode ^ result.hashCode;
 
   @override
   Map<String, dynamic> toMap() {
@@ -42,12 +40,9 @@ class OvulationTestRecord extends InstantaneousRecord {
   factory OvulationTestRecord.fromMap(Map<String, dynamic> map) {
     return OvulationTestRecord(
       time: DateTime.parse(map['time']),
-      zoneOffset: map['zoneOffset'] != null
-          ? Duration(hours: map['zoneOffset'] as int)
-          : null,
+      zoneOffset: map['zoneOffset'] != null ? parseTimeZoneOffset(map['zoneOffset']) : null,
       metadata: Metadata.fromMap(Map<String, dynamic>.from(map['metadata'])),
-      result: (map['result'] != null &&
-              map['result'] as int < OvulationTestResult.values.length)
+      result: (map['result'] != null && map['result'] as int < OvulationTestResult.values.length)
           ? OvulationTestResult.values[map['result'] as int]
           : OvulationTestResult.inconclusive,
     );
